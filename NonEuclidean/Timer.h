@@ -1,37 +1,45 @@
 #pragma once
+
 #include <Windows.h>
 
-class Timer {
+class Timer
+{
 public:
-  Timer() {
+  Timer()
+  {
     QueryPerformanceFrequency(&frequency);
   }
 
-  void Start() {
+  void Start()
+  {
     QueryPerformanceCounter(&t1);
   }
 
-  float Stop() {
+  float Stop()
+  {
     QueryPerformanceCounter(&t2);
     return float(t2.QuadPart - t1.QuadPart) / frequency.QuadPart;
   }
 
-  int64_t GetTicks() {
+  int64_t GetTicks()
+  {
     QueryPerformanceCounter(&t2);
     return t2.QuadPart;
   }
 
-  int64_t SecondsToTicks(float s) {
+  int64_t SecondsToTicks(float s)
+  {
     return int64_t(float(frequency.QuadPart) * s);
   }
 
-  float StopStart() {
+  float StopStart()
+  {
     const float result = Stop();
     t1 = t2;
     return result;
   }
 
 private:
-  LARGE_INTEGER frequency;        // ticks per second
-  LARGE_INTEGER t1, t2;           // ticks
+  LARGE_INTEGER frequency; // ticks per second
+  LARGE_INTEGER t1, t2; // ticks
 };

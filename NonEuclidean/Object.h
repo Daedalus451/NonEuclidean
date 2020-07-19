@@ -1,30 +1,41 @@
 #pragma once
-#include "GameHeader.h"
-#include "Vector.h"
-#include "Camera.h"
-#include "Sphere.h"
-#include <vector>
-#include <memory>
 
-//Forward declarations
+#include <memory>
+#include <vector>
+
+#include "Camera.h"
+#include "GameHeader.h"
+#include "Sphere.h"
+#include "Vector.h"
+
+// Forward declarations
 class Physical;
 class Mesh;
 class Texture;
 class Shader;
 
-class Object {
+class Object
+{
 public:
   Object();
-  virtual ~Object() {}
+  virtual ~Object()
+  {
+  }
 
   virtual void Reset();
   virtual void Draw(const Camera& cam, uint32_t curFBO);
-  virtual void Update() {};
-  virtual void OnHit(Object& other, Vector3& push) {};
+  virtual void Update(){};
+  virtual void OnHit(Object& other, Vector3& push){};
 
-  //Casts
-  virtual Physical* AsPhysical() { return nullptr; }
-  const Physical* AsPhysical() const { return const_cast<Object*>(this)->AsPhysical(); }
+  // Casts
+  virtual Physical* AsPhysical()
+  {
+    return nullptr;
+  }
+  const Physical* AsPhysical() const
+  {
+    return const_cast<Object*>(this)->AsPhysical();
+  }
 
   void DebugDraw(const Camera& cam);
 

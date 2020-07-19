@@ -1,11 +1,15 @@
 #pragma once
-#include "Vector.h"
-#include "Physical.h"
 
-class Player : public Physical {
+#include "Physical.h"
+#include "Vector.h"
+
+class Player : public Physical
+{
 public:
   Player();
-  virtual ~Player() override {}
+  virtual ~Player() override
+  {
+  }
 
   virtual void Reset() override;
   virtual void Update() override;

@@ -1,9 +1,12 @@
 #pragma once
-#include <GL/glew.h>
+
 #include <string>
 #include <vector>
 
-class Shader {
+#include <GL/glew.h>
+
+class Shader
+{
 public:
   Shader(const char* name);
   ~Shader();

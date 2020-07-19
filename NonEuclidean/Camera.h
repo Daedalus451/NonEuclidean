@@ -1,7 +1,9 @@
 #pragma once
+
 #include "Vector.h"
 
-class Camera {
+class Camera
+{
 public:
   Camera();
 

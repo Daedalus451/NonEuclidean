@@ -1,11 +1,13 @@
 #pragma once
+
 #include "Camera.h"
 #include <GL/glew.h>
 
-//Forward declaration
+// Forward declaration
 class Portal;
 
-class FrameBuffer {
+class FrameBuffer
+{
 public:
   FrameBuffer();
 

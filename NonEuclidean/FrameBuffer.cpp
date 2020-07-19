@@ -1,9 +1,12 @@
 #include "FrameBuffer.h"
-#include "GameHeader.h"
-#include "Engine.h"
+
 #include <iostream>
 
-FrameBuffer::FrameBuffer() {
+#include "Engine.h"
+#include "GameHeader.h"
+
+FrameBuffer::FrameBuffer()
+{
   glGenTextures(1, &texId);
   glBindTexture(GL_TEXTURE_2D, texId);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
@@ -23,21 +26,24 @@ FrameBuffer::FrameBuffer() {
   glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, renderBuf);
   //-------------------------
 
-  //Does the GPU support current FBO configuration?
+  // Does the GPU support current FBO configuration?
   GLenum status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
-  if (status != GL_FRAMEBUFFER_COMPLETE_EXT) {
+  if(status != GL_FRAMEBUFFER_COMPLETE_EXT)
+  {
     return;
   }
 
-  //Unbind so future rendering can proceed normally
+  // Unbind so future rendering can proceed normally
   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 }
 
-void FrameBuffer::Use() {
+void FrameBuffer::Use()
+{
   glBindTexture(GL_TEXTURE_2D, texId);
 }
 
-void FrameBuffer::Render(const Camera& cam, GLuint curFBO, const Portal* skipPortal) {
+void FrameBuffer::Render(const Camera& cam, GLuint curFBO, const Portal* skipPortal)
+{
   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo);
   glViewport(0, 0, GH_FBO_SIZE, GH_FBO_SIZE);
   GH_ENGINE->Render(cam, fbo, skipPortal);

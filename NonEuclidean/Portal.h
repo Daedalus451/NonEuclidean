@@ -1,17 +1,24 @@
 #pragma once
-#include "GameHeader.h"
-#include "Object.h"
-#include "FrameBuffer.h"
-#include "Mesh.h"
-#include "Resources.h"
-#include "Shader.h"
+
 #include <memory>
 
-class Portal : public Object {
+#include "FrameBuffer.h"
+#include "GameHeader.h"
+#include "Mesh.h"
+#include "Object.h"
+#include "Resources.h"
+#include "Shader.h"
+
+class Portal : public Object
+{
 public:
-  //Subclass that represents a warp
-  struct Warp {
-    Warp(const Portal* fromPortal) : fromPortal(fromPortal), toPortal(nullptr) {
+  // Subclass that represents a warp
+  struct Warp
+  {
+    Warp(const Portal* fromPortal)
+    : fromPortal(fromPortal)
+    , toPortal(nullptr)
+    {
       delta.MakeIdentity();
       deltaInv.MakeIdentity();
     }
@@ -23,7 +30,9 @@ public:
   };
 
   Portal();
-  virtual ~Portal() {}
+  virtual ~Portal()
+  {
+  }
 
   virtual void Draw(const Camera& cam, GLuint curFBO) override;
   void DrawPink(const Camera& cam);

@@ -1,7 +1,9 @@
 #pragma once
+
 #include <GL/glew.h>
 
-class Texture {
+class Texture
+{
 public:
   Texture(const char* fname, int rows, int cols);
 

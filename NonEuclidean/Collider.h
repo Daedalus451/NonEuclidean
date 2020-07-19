@@ -1,8 +1,10 @@
 #pragma once
-#include "Vector.h"
-#include "Camera.h"
 
-class Collider {
+#include "Camera.h"
+#include "Vector.h"
+
+class Collider
+{
 public:
   Collider(const Vector3& a, const Vector3& b, const Vector3& c);
 

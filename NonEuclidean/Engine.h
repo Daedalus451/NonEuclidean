@@ -1,19 +1,23 @@
 #pragma once
-#include "GameHeader.h"
-#include "Camera.h"
-#include "Input.h"
-#include "Object.h"
-#include "Portal.h"
-#include "Player.h"
-#include "Timer.h"
-#include "Scene.h"
-#include "Sky.h"
-#include <GL/glew.h>
-#include <windows.h>
+
 #include <memory>
 #include <vector>
 
-class Engine {
+#include <GL/glew.h>
+#include <windows.h>
+
+#include "Camera.h"
+#include "GameHeader.h"
+#include "Input.h"
+#include "Object.h"
+#include "Player.h"
+#include "Portal.h"
+#include "Scene.h"
+#include "Sky.h"
+#include "Timer.h"
+
+class Engine
+{
 public:
   Engine();
   ~Engine();
@@ -25,7 +29,10 @@ public:
 
   LRESULT WindowProc(HWND hCurWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-  const Player& GetPlayer() const { return *player; }
+  const Player& GetPlayer() const
+  {
+    return *player;
+  }
   float NearestPortalDist() const;
 
 private:
@@ -36,14 +43,14 @@ private:
   void ConfineCursor();
   void ToggleFullscreen();
 
-  HDC   hDC;           // device context
-  HGLRC hRC;				   // opengl context
-  HWND  hWnd;				   // window
+  HDC hDC; // device context
+  HGLRC hRC; // opengl context
+  HWND hWnd; // window
   HINSTANCE hInstance; // process id
 
-  LONG iWidth;         // window width
-  LONG iHeight;        // window height
-  bool isFullscreen;   // fullscreen state
+  LONG iWidth; // window width
+  LONG iHeight; // window height
+  bool isFullscreen; // fullscreen state
 
   Camera main_cam;
   Input input;
