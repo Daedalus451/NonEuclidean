@@ -40,6 +40,7 @@ public:
   }
 
 private:
-  LARGE_INTEGER frequency; // ticks per second
-  LARGE_INTEGER t1, t2; // ticks
+  LARGE_INTEGER frequency = {0}; // ticks per second
+  LARGE_INTEGER t1 = {0}; // ticks
+  LARGE_INTEGER t2 = {0};
 };
