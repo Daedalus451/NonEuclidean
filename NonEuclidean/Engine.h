@@ -4,7 +4,7 @@
 #include <vector>
 
 #include <GL/glew.h>
-#include <windows.h>
+#include <Windows.h>
 
 #include "Camera.h"
 #include "GameHeader.h"
