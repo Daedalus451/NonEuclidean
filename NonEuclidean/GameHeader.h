@@ -1,6 +1,6 @@
 #pragma once
 
-#include <stdint.h>
+#include <cstdint>
 #pragma warning(disable : 4100) // Unreferenced formal parameter
 #pragma warning(disable : 4099) // Missing PDB file
 
