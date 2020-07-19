@@ -6,7 +6,7 @@
 
 Physical::Physical()
 {
-  Reset();
+  Physical::Reset();
 }
 
 void Physical::Reset()
