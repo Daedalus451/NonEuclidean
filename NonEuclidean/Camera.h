@@ -23,6 +23,6 @@ public:
 
   int width;
   int height;
-  float near;
-  float far;
+  float near_;
+  float far_;
 };

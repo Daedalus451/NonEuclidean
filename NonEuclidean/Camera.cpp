@@ -18,12 +18,12 @@ void Camera::SetSize(int w, int h, float n, float f)
 {
   width = w;
   height = h;
-  near = n;
-  far = f;
+  near_ = n;
+  far_ = f;
 
   const float e = 1.0f / std::tan(GH_FOV * GH_PI / 360.0f);
   const float a = float(height) / float(width);
-  const float d = near - far;
+  const float d = near_ - far_;
 
   projection.m[0] = e * a;
   projection.m[1] = 0.0f;
@@ -35,8 +35,8 @@ void Camera::SetSize(int w, int h, float n, float f)
   projection.m[7] = 0.0f;
   projection.m[8] = 0.0f;
   projection.m[9] = 0.0f;
-  projection.m[10] = (near + far) / d;
-  projection.m[11] = (2 * near * far) / d;
+  projection.m[10] = (near_ + far_) / d;
+  projection.m[11] = (2 * near_ * far_) / d;
   projection.m[12] = 0.0f;
   projection.m[13] = 0.0f;
   projection.m[14] = -1.0f;
