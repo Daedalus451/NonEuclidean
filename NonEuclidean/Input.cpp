@@ -13,8 +13,8 @@ Input::Input()
 
 void Input::EndFrame()
 {
-  memset(key_press, 0, sizeof(key_press));
-  memset(mouse_button_press, 0, sizeof(mouse_button_press));
+  memset(key_press.data(), 0, key_press.size());
+  memset(mouse_button_press.data(), 0, mouse_button_press.size());
   mouse_dx = mouse_dx * GH_MOUSE_SMOOTH + mouse_ddx * (1.0f - GH_MOUSE_SMOOTH);
   mouse_dy = mouse_dy * GH_MOUSE_SMOOTH + mouse_ddy * (1.0f - GH_MOUSE_SMOOTH);
   mouse_ddx = 0.0f;
@@ -23,8 +23,8 @@ void Input::EndFrame()
 
 void Input::UpdateRaw(const tagRAWINPUT* raw)
 {
-  static BYTE buffer[2048];
-  static UINT buffer_size = sizeof(buffer);
+  static std::array<BYTE, 2048> buffer;
+  static UINT buffer_size = static_cast<UINT>(buffer.size());
 
   if(raw->header.dwType == RIM_TYPEMOUSE)
   {

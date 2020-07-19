@@ -1,6 +1,7 @@
 #include "Engine.h"
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <iostream>
 
@@ -275,12 +276,12 @@ void Engine::Render(const Camera& cam, GLuint curFBO, const Portal* skipPortal)
   }
 
   // Create queries (if applicable)
-  GLuint queries[GH_MAX_PORTALS];
-  GLuint drawTest[GH_MAX_PORTALS];
+  std::array<GLuint, GH_MAX_PORTALS> queries;
+  std::array<GLuint, GH_MAX_PORTALS> drawTest;
   assert(vPortals.size() <= GH_MAX_PORTALS);
   if(occlusionCullingSupported)
   {
-    glGenQueriesARB((GLsizei) vPortals.size(), queries);
+    glGenQueriesARB((GLsizei) vPortals.size(), queries.data());
   }
 
   // Draw scene
@@ -316,7 +317,7 @@ void Engine::Render(const Camera& cam, GLuint curFBO, const Portal* skipPortal)
       };
       glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
       glDepthMask(GL_TRUE);
-      glDeleteQueriesARB((GLsizei) vPortals.size(), queries);
+      glDeleteQueriesARB((GLsizei) vPortals.size(), queries.data());
     }
     for(size_t i = 0; i < vPortals.size(); ++i)
     {
@@ -346,8 +347,8 @@ void Engine::Render(const Camera& cam, GLuint curFBO, const Portal* skipPortal)
 LRESULT Engine::WindowProc(HWND hCurWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
   static PAINTSTRUCT ps;
-  static BYTE lpb[256];
-  static UINT dwSize = sizeof(lpb);
+  static std::array<BYTE, 256> lpb;
+  static UINT dwSize = static_cast<UINT>(lpb.size());
 
   switch(uMsg)
   {
@@ -396,9 +397,9 @@ LRESULT Engine::WindowProc(HWND hCurWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
       return 0;
 
     case WM_INPUT:
-      dwSize = sizeof(lpb);
-      GetRawInputData((HRAWINPUT) lParam, RID_INPUT, lpb, &dwSize, sizeof(RAWINPUTHEADER));
-      input.UpdateRaw((const RAWINPUT*) lpb);
+      dwSize = static_cast<UINT>(lpb.size());
+      GetRawInputData((HRAWINPUT) lParam, RID_INPUT, lpb.data(), &dwSize, sizeof(RAWINPUTHEADER));
+      input.UpdateRaw((const RAWINPUT*) lpb.data());
       break;
 
     case WM_CLOSE:
@@ -525,7 +526,7 @@ void Engine::SetupInputs()
   static const int HID_USAGE_GENERIC_JOYSTICK = 0x04;
   static const int HID_USAGE_GENERIC_GAMEPAD = 0x05;
 
-  RAWINPUTDEVICE Rid[3];
+  std::array<RAWINPUTDEVICE, 3> Rid;
 
   // Mouse
   Rid[0].usUsagePage = HID_USAGE_PAGE_GENERIC;
@@ -545,7 +546,7 @@ void Engine::SetupInputs()
   Rid[2].dwFlags = 0;
   Rid[2].hwndTarget = 0;
 
-  RegisterRawInputDevices(Rid, 3, sizeof(Rid[0]));
+  RegisterRawInputDevices(Rid.data(), 3, sizeof(Rid[0]));
 }
 
 void Engine::ConfineCursor()

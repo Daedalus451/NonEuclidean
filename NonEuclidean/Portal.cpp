@@ -55,7 +55,7 @@ void Portal::Draw(const Camera& cam, GLuint curFBO)
   const Matrix4 mvp = cam.Matrix() * mv;
   shader->Use();
   frameBuf[GH_REC_LEVEL - 1].Use();
-  shader->SetMVP(mvp.m, mv.m);
+  shader->SetMVP(mvp.m.data(), mv.m.data());
   mesh->Draw();
 }
 
@@ -64,7 +64,7 @@ void Portal::DrawPink(const Camera& cam)
   const Matrix4 mv = LocalToWorld();
   const Matrix4 mvp = cam.Matrix() * mv;
   errShader->Use();
-  errShader->SetMVP(mvp.m, mv.m);
+  errShader->SetMVP(mvp.m.data(), mv.m.data());
   mesh->Draw();
 }
 

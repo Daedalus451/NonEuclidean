@@ -31,7 +31,7 @@ void Object::Draw(const Camera& cam, uint32_t curFBO)
     {
       texture->Use();
     }
-    shader->SetMVP(mvp.m, mv.m);
+    shader->SetMVP(mvp.m.data(), mv.m.data());
     mesh->Draw();
   }
 }

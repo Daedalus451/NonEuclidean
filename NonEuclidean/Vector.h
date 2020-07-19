@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <cassert>
 #include <cfloat>
 #include <cmath>
@@ -392,7 +393,7 @@ public:
   // General
   inline void Fill(float b)
   {
-    std::fill(m, m + 16, b);
+    std::fill(m.begin(), m.end(), b);
   }
 
   inline void MakeZero()
@@ -837,7 +838,7 @@ public:
   }
 
   // Components
-  float m[16];
+  std::array<float, 16> m;
 };
 
 // Debug printing

@@ -1,7 +1,9 @@
 #include "Texture.h"
 
+#include <array>
 #include <cassert>
 #include <fstream>
+#include <vector>
 
 Texture::Texture(const char* fname, int rows, int cols)
 {
@@ -18,15 +20,15 @@ Texture::Texture(const char* fname, int rows, int cols)
   }
 
   // Read the bitmap
-  char input[54];
-  fin.read(input, 54);
+  std::array<char, 54> input;
+  fin.read(input.data(), 54);
   const GLsizei width = *reinterpret_cast<int32_t*>(&input[18]);
   const GLsizei height = *reinterpret_cast<int32_t*>(&input[22]);
   assert(width % cols == 0);
   assert(height % rows == 0);
   const int block_w = width / cols;
   const int block_h = height / rows;
-  uint8_t* img = new uint8_t[width * height * 3];
+  std::vector<uint8_t> img(width * height * 3);
   for(int y = height; y-- > 0;)
   {
     const int row = y / block_h;
@@ -35,14 +37,14 @@ Texture::Texture(const char* fname, int rows, int cols)
     {
       const int col = x / block_w;
       const int tx = x % block_w;
-      uint8_t* ptr = img + ((row * cols + col) * (block_w * block_h) + ty * block_w + tx) * 3;
+      uint8_t* ptr = img.data() + ((row * cols + col) * (block_w * block_h) + ty * block_w + tx) * 3;
       fin.read(reinterpret_cast<char*>(ptr), 3);
     }
     const int padding = (width * 3) % 4;
     if(padding)
     {
-      char junk[3];
-      fin.read(junk, 4 - padding);
+      std::array<char, 3> junk;
+      fin.read(junk.data(), 4 - padding);
     }
   }
 
@@ -58,7 +60,7 @@ Texture::Texture(const char* fname, int rows, int cols)
     glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_GENERATE_MIPMAP, GL_TRUE);
     glGenerateMipmap(GL_TEXTURE_2D);
     glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_RGB8, width / rows, height / cols, rows * cols, 0, GL_BGR, GL_UNSIGNED_BYTE,
-                 img);
+                 img.data());
   }
   else
   {
@@ -67,11 +69,8 @@ Texture::Texture(const char* fname, int rows, int cols)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, img);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, img.data());
   }
-
-  // Clenup
-  delete[] img;
 }
 
 void Texture::Use()

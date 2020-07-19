@@ -18,7 +18,7 @@ public:
     const Matrix4 mvp = cam.projection.Inverse();
     const Matrix4 mv = cam.worldView.Inverse();
     shader->Use();
-    shader->SetMVP(mvp.m, mv.m);
+    shader->SetMVP(mvp.m.data(), mv.m.data());
     mesh->Draw();
     glDepthMask(GL_TRUE);
   }

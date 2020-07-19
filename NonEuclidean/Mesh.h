@@ -27,7 +27,7 @@ private:
                uint32_t b, uint32_t bt, uint32_t c, uint32_t ct, bool is3DTex);
 
   GLuint vao = 0;
-  GLuint vbo[NUM_VBOS];
+  std::array<GLuint, NUM_VBOS> vbo;
 
   std::vector<float> verts;
   std::vector<float> uvs;

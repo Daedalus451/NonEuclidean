@@ -1,5 +1,7 @@
 #pragma once
 
+#include <array>
+
 struct tagRAWINPUT;
 
 class Input
@@ -11,12 +13,12 @@ public:
   void UpdateRaw(const tagRAWINPUT* raw);
 
   // Keyboard
-  bool key[256];
-  bool key_press[256];
+  std::array<bool, 256> key;
+  std::array<bool, 256> key_press;
 
   // Mouse
-  bool mouse_button[3];
-  bool mouse_button_press[3];
+  std::array<bool, 3> mouse_button;
+  std::array<bool, 3> mouse_button_press;
   float mouse_dx = 0.0f;
   float mouse_dy = 0.0f;
   float mouse_ddx = 0.0f;
