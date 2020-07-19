@@ -8,15 +8,12 @@
 
 #include "GameHeader.h"
 
-Input::Input()
-{
-  memset(this, 0, sizeof(Input));
-}
+Input::Input() = default;
 
 void Input::EndFrame()
 {
-  memset(key_press.data(), 0, key_press.size());
-  memset(mouse_button_press.data(), 0, mouse_button_press.size());
+  std::memset(key_press.data(), 0, key_press.size());
+  std::memset(mouse_button_press.data(), 0, mouse_button_press.size());
   mouse_dx = mouse_dx * GH::MOUSE_SMOOTH + mouse_ddx * (1.0f - GH::MOUSE_SMOOTH);
   mouse_dy = mouse_dy * GH::MOUSE_SMOOTH + mouse_ddy * (1.0f - GH::MOUSE_SMOOTH);
   mouse_ddx = 0.0f;

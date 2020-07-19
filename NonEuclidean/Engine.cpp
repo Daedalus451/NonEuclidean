@@ -36,7 +36,6 @@ Engine::Engine()
 {
   GH::ENGINE = this;
   GH::INPUT = &input;
-  isFullscreen = false;
 
   SetProcessDPIAware();
   CreateGLWindow();
@@ -454,7 +453,7 @@ void Engine::CreateGLWindow()
   hDC = GetDC(hWnd);
 
   PIXELFORMATDESCRIPTOR pfd;
-  memset(&pfd, 0, sizeof(pfd));
+  std::memset(&pfd, 0, sizeof(pfd));
   pfd.nSize = sizeof(pfd);
   pfd.nVersion = 1;
   pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
