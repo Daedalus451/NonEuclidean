@@ -73,6 +73,11 @@ Texture::Texture(const char* fname, int rows, int cols)
   }
 }
 
+Texture::~Texture()
+{
+  glDeleteTextures(1, &texId);
+}
+
 void Texture::Use()
 {
   if(is3D)
