@@ -13,18 +13,21 @@ public:
   Vector3()
   {
   }
+
   explicit Vector3(float b)
   : x(b)
   , y(b)
   , z(b)
   {
   }
+
   explicit Vector3(const float* b)
   : x(b[0])
   , y(b[1])
   , z(b[2])
   {
   }
+
   explicit Vector3(float x, float y, float z)
   : x(x)
   , y(y)
@@ -37,18 +40,22 @@ public:
   {
     return Vector3(0.0f);
   }
+
   inline static Vector3 Ones()
   {
     return Vector3(1.0f);
   }
+
   inline static Vector3 UnitX()
   {
     return Vector3(1, 0, 0);
   }
+
   inline static Vector3 UnitY()
   {
     return Vector3(0, 1, 0);
   }
+
   inline static Vector3 UnitZ()
   {
     return Vector3(0, 0, 1);
@@ -61,30 +68,35 @@ public:
     y = _y;
     z = _z;
   }
+
   inline void SetZero()
   {
     x = 0.0f;
     y = 0.0f;
     z = 0.0f;
   }
+
   inline void SetOnes()
   {
     x = 1.0f;
     y = 1.0f;
     z = 1.0f;
   }
+
   inline void SetUnitX()
   {
     x = 1.0f;
     y = 0.0f;
     z = 0.0f;
   }
+
   inline void SetUnitY()
   {
     x = 0.0f;
     y = 1.0f;
     z = 0.0f;
   }
+
   inline void SetUnitZ()
   {
     x = 0.0f;
@@ -97,82 +109,98 @@ public:
   {
     return Vector3(x + b, y + b, z + b);
   }
+
   inline Vector3 operator-(float b) const
   {
     return Vector3(x - b, y - b, z - b);
   }
+
   inline Vector3 operator*(float b) const
   {
     return Vector3(x * b, y * b, z * b);
   }
+
   inline Vector3 operator/(float b) const
   {
     return Vector3(x / b, y / b, z / b);
   }
+
   inline Vector3 operator+(const Vector3& b) const
   {
     return Vector3(x + b.x, y + b.y, z + b.z);
   }
+
   inline Vector3 operator-(const Vector3& b) const
   {
     return Vector3(x - b.x, y - b.y, z - b.z);
   }
+
   inline Vector3 operator*(const Vector3& b) const
   {
     return Vector3(x * b.x, y * b.y, z * b.z);
   }
+
   inline Vector3 operator/(const Vector3& b) const
   {
     return Vector3(x / b.x, y / b.y, z / b.z);
   }
+
   inline void operator+=(float b)
   {
     x += b;
     y += b;
     z += b;
   }
+
   inline void operator-=(float b)
   {
     x -= b;
     y -= b;
     z -= b;
   }
+
   inline void operator*=(float b)
   {
     x *= b;
     y *= b;
     z *= b;
   }
+
   inline void operator/=(float b)
   {
     x /= b;
     y /= b;
     z /= b;
   }
+
   inline void operator+=(const Vector3& b)
   {
     x += b.x;
     y += b.y;
     z += b.z;
   }
+
   inline void operator-=(const Vector3& b)
   {
     x -= b.x;
     y -= b.y;
     z -= b.z;
   }
+
   inline void operator*=(const Vector3& b)
   {
     x *= b.x;
     y *= b.y;
     z *= b.z;
   }
+
   inline void operator/=(const Vector3& b)
   {
     x /= b.x;
     y /= b.y;
     z /= b.z;
   }
+
   inline Vector3 operator-() const
   {
     return Vector3(-x, -y, -z);
@@ -183,14 +211,17 @@ public:
   {
     return x * b.x + y * b.y + z * b.z;
   }
+
   inline Vector3 Cross(const Vector3& b) const
   {
     return Vector3(y * b.z - z * b.y, z * b.x - x * b.z, x * b.y - y * b.x);
   }
+
   inline float MagSq() const
   {
     return x * x + y * y + z * z;
   }
+
   inline float Mag() const
   {
     return std::sqrt(MagSq());
@@ -201,26 +232,32 @@ public:
   {
     (*this) /= Mag();
   }
+
   inline void NormalizeSafe()
   {
     (*this) /= (Mag() + FLT_EPSILON);
   }
+
   inline Vector3 Normalized() const
   {
     return (*this) / Mag();
   }
+
   inline Vector3 NormalizedSafe() const
   {
     return (*this) / (Mag() + FLT_EPSILON);
   }
+
   inline float Angle(const Vector3& b) const
   {
     return std::acos(Normalized().Dot(b.Normalized()));
   }
+
   inline float AngleSafe(const Vector3& b) const
   {
     return std::acos(NormalizedSafe().Dot(b.NormalizedSafe()));
   }
+
   inline void ClipMag(float m)
   {
     assert(m > 0.0f);
@@ -242,10 +279,12 @@ public:
   float y = 0.0f;
   float z = 0.0f;
 };
+
 inline Vector3 operator/(float b, const Vector3& v)
 {
   return Vector3(b / v.x, b / v.y, b / v.z);
 }
+
 inline void operator/=(float b, Vector3& v)
 {
   v.x = b / v.x;
@@ -259,6 +298,7 @@ public:
   Vector4()
   {
   }
+
   explicit Vector4(float b)
   : x(b)
   , y(b)
@@ -266,6 +306,7 @@ public:
   , w(b)
   {
   }
+
   explicit Vector4(const Vector3& xyz, float w)
   : x(xyz.x)
   , y(xyz.y)
@@ -273,6 +314,7 @@ public:
   , w(w)
   {
   }
+
   explicit Vector4(float x, float y, float z, float w)
   : x(x)
   , y(y)
@@ -285,10 +327,12 @@ public:
   {
     return Vector3(x, y, z);
   }
+
   inline Vector3 XYZNormalized() const
   {
     return Vector3(x, y, z).Normalized();
   }
+
   inline Vector3 Homogenized() const
   {
     return Vector3(x / w, y / w, z / w);
@@ -298,10 +342,12 @@ public:
   {
     return Vector4(x * b, y * b, z * b, w * b);
   }
+
   inline Vector4 operator/(float b) const
   {
     return Vector4(x / b, y / b, z / b, w / b);
   }
+
   inline void operator*=(float b)
   {
     x *= b;
@@ -309,6 +355,7 @@ public:
     z *= b;
     w *= b;
   }
+
   inline void operator/=(float b)
   {
     x /= b;
@@ -336,6 +383,7 @@ public:
   Matrix4()
   {
   }
+
   explicit Matrix4(float b)
   {
     Fill(b);
@@ -346,10 +394,12 @@ public:
   {
     std::fill(m, m + 16, b);
   }
+
   inline void MakeZero()
   {
     Fill(0.0f);
   }
+
   inline void MakeIdentity()
   {
     m[0] = 1.0f;
@@ -369,6 +419,7 @@ public:
     m[14] = 0.0f;
     m[15] = 1.0f;
   }
+
   inline void MakeRotX(float a)
   {
     m[0] = 1.0f;
@@ -388,6 +439,7 @@ public:
     m[14] = 0.0f;
     m[15] = 1.0f;
   }
+
   inline void MakeRotY(float a)
   {
     m[0] = std::cos(a);
@@ -407,6 +459,7 @@ public:
     m[14] = 0.0f;
     m[15] = 1.0f;
   }
+
   inline void MakeRotZ(float a)
   {
     m[0] = std::cos(a);
@@ -426,6 +479,7 @@ public:
     m[14] = 0.0f;
     m[15] = 1.0f;
   }
+
   inline void MakeTrans(const Vector3& t)
   {
     m[0] = 1.0f;
@@ -445,6 +499,7 @@ public:
     m[14] = 0.0f;
     m[15] = 1.0f;
   }
+
   inline void MakeScale(const Vector3& s)
   {
     m[0] = s.x;
@@ -472,42 +527,49 @@ public:
     m.MakeZero();
     return m;
   }
+
   inline static Matrix4 Identity()
   {
     Matrix4 m;
     m.MakeIdentity();
     return m;
   }
+
   inline static Matrix4 RotX(float a)
   {
     Matrix4 m;
     m.MakeRotX(a);
     return m;
   }
+
   inline static Matrix4 RotY(float a)
   {
     Matrix4 m;
     m.MakeRotY(a);
     return m;
   }
+
   inline static Matrix4 RotZ(float a)
   {
     Matrix4 m;
     m.MakeRotZ(a);
     return m;
   }
+
   inline static Matrix4 Trans(const Vector3& t)
   {
     Matrix4 m;
     m.MakeTrans(t);
     return m;
   }
+
   inline static Matrix4 Scale(float s)
   {
     Matrix4 m;
     m.MakeScale(Vector3(s));
     return m;
   }
+
   inline static Matrix4 Scale(const Vector3& s)
   {
     Matrix4 m;
@@ -520,18 +582,22 @@ public:
   {
     return Vector3(m[0], m[4], m[8]);
   }
+
   inline Vector3 YAxis() const
   {
     return Vector3(m[1], m[5], m[9]);
   }
+
   inline Vector3 ZAxis() const
   {
     return Vector3(m[2], m[6], m[10]);
   }
+
   inline Vector3 Translation() const
   {
     return Vector3(m[3], m[7], m[11]);
   }
+
   inline Vector3 Scale() const
   {
     return Vector3(m[0], m[5], m[10]);
@@ -544,24 +610,28 @@ public:
     m[7] = t.y;
     m[11] = t.z;
   }
+
   inline void SetXAxis(const Vector3& t)
   {
     m[0] = t.x;
     m[4] = t.y;
     m[8] = t.z;
   }
+
   inline void SetYAxis(const Vector3& t)
   {
     m[1] = t.x;
     m[5] = t.y;
     m[9] = t.z;
   }
+
   inline void SetZAxis(const Vector3& t)
   {
     m[2] = t.x;
     m[6] = t.y;
     m[10] = t.z;
   }
+
   inline void SetScale(const Vector3& s)
   {
     m[0] = s.x;
@@ -591,12 +661,14 @@ public:
     out.m[15] = m[15];
     return out;
   }
+
   inline void Translate(const Vector3& t)
   {
     m[3] += t.x;
     m[7] += t.y;
     m[11] += t.z;
   }
+
   inline void Stretch(const Vector3& s)
   {
     m[0] *= s.x;
@@ -614,6 +686,7 @@ public:
     }
     return out;
   }
+
   inline Matrix4 operator-(const Matrix4& b) const
   {
     Matrix4 out;
@@ -623,6 +696,7 @@ public:
     }
     return out;
   }
+
   inline void operator+=(const Matrix4& b)
   {
     for(int i = 0; i < 16; ++i)
@@ -630,6 +704,7 @@ public:
       m[i] += b.m[i];
     }
   }
+
   inline void operator-=(const Matrix4& b)
   {
     for(int i = 0; i < 16; ++i)
@@ -637,6 +712,7 @@ public:
       m[i] -= b.m[i];
     }
   }
+
   inline void operator*=(float b)
   {
     for(int i = 0; i < 16; ++i)
@@ -644,6 +720,7 @@ public:
       m[i] *= b;
     }
   }
+
   inline void operator/=(float b)
   {
     operator*=(1.0f / b);
@@ -674,16 +751,19 @@ public:
     out.m[15] = b.m[3] * m[12] + b.m[7] * m[13] + b.m[11] * m[14] + b.m[15] * m[15];
     return out;
   }
+
   void operator*=(const Matrix4& b)
   {
     (*this) = operator*(b);
   }
+
   Vector4 operator*(const Vector4& b) const
   {
     return Vector4(m[0] * b.x + m[1] * b.y + m[2] * b.z + m[3] * b.w, m[4] * b.x + m[5] * b.y + m[6] * b.z + m[7] * b.w,
                    m[8] * b.x + m[9] * b.y + m[10] * b.z + m[11] * b.w,
                    m[12] * b.x + m[13] * b.y + m[14] * b.z + m[15] * b.w);
   }
+
   Vector3 MulPoint(const Vector3& b) const
   {
     const Vector3 p(m[0] * b.x + m[1] * b.y + m[2] * b.z + m[3], m[4] * b.x + m[5] * b.y + m[6] * b.z + m[7],
@@ -691,6 +771,7 @@ public:
     const float w = m[12] * b.x + m[13] * b.y + m[14] * b.z + m[15];
     return p / w;
   }
+
   Vector3 MulDirection(const Vector3& b) const
   {
     return Vector3(m[0] * b.x + m[1] * b.y + m[2] * b.z, m[4] * b.x + m[5] * b.y + m[6] * b.z,
@@ -765,11 +846,13 @@ inline std::ostream& operator<<(std::ostream& out, const Vector3& v)
   out << v.x << ", " << v.y << ", " << v.z;
   return out;
 }
+
 inline std::ostream& operator<<(std::ostream& out, const Vector4& v)
 {
   out << v.x << ", " << v.y << ", " << v.z << ", " << v.w;
   return out;
 }
+
 inline std::ostream& operator<<(std::ostream& out, const Matrix4& m)
 {
   out << m.m[0] << ", " << m.m[1] << ", " << m.m[2] << ", " << m.m[3] << "\n";
