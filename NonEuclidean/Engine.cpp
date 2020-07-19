@@ -171,8 +171,13 @@ void Engine::LoadScene(int ix)
   {
     curScene->Unload();
   }
-  vObjects.clear();
-  vPortals.clear();
+
+  PObjectVec tempObjects;
+  PPortalVec tempPortals;
+
+  std::swap(tempObjects, vObjects);
+  std::swap(tempPortals, vPortals);
+
   player->Reset();
 
   // Create new scene
