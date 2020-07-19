@@ -45,20 +45,20 @@ Engine::Engine()
   InitGLObjects();
   SetupInputs();
 
-  player.reset(new Player);
+  player = std::make_shared<Player>();
   GH::PLAYER = player.get();
 
-  vScenes.push_back(std::shared_ptr<Scene>(new Level1));
-  vScenes.push_back(std::shared_ptr<Scene>(new Level2(3)));
-  vScenes.push_back(std::shared_ptr<Scene>(new Level2(6)));
-  vScenes.push_back(std::shared_ptr<Scene>(new Level3));
-  vScenes.push_back(std::shared_ptr<Scene>(new Level4));
-  vScenes.push_back(std::shared_ptr<Scene>(new Level5));
-  vScenes.push_back(std::shared_ptr<Scene>(new Level6));
+  vScenes.push_back(std::make_shared<Level1>());
+  vScenes.push_back(std::make_shared<Level2>(3));
+  vScenes.push_back(std::make_shared<Level2>(6));
+  vScenes.push_back(std::make_shared<Level3>());
+  vScenes.push_back(std::make_shared<Level4>());
+  vScenes.push_back(std::make_shared<Level5>());
+  vScenes.push_back(std::make_shared<Level6>());
 
   LoadScene(0);
 
-  sky.reset(new Sky);
+  sky = std::make_shared<Sky>();
 }
 
 Engine::~Engine()

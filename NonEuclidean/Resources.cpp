@@ -8,7 +8,7 @@ std::shared_ptr<Mesh> AquireMesh(const char* name)
   std::weak_ptr<Mesh>& mesh = map[std::string(name)];
   if(mesh.expired())
   {
-    std::shared_ptr<Mesh> newMesh(new Mesh(name));
+    auto newMesh = std::make_shared<Mesh>(name);
     mesh = newMesh;
     return newMesh;
   }
@@ -24,7 +24,7 @@ std::shared_ptr<Shader> AquireShader(const char* name)
   std::weak_ptr<Shader>& shader = map[std::string(name)];
   if(shader.expired())
   {
-    std::shared_ptr<Shader> newShader(new Shader(name));
+    auto newShader = std::make_shared<Shader>(name);
     shader = newShader;
     return newShader;
   }
@@ -40,7 +40,7 @@ std::shared_ptr<Texture> AquireTexture(const char* name, int rows, int cols)
   std::weak_ptr<Texture>& tex = map[std::string(name)];
   if(tex.expired())
   {
-    std::shared_ptr<Texture> newTex(new Texture(name, rows, cols));
+    auto newTex = std::make_shared<Texture>(name, rows, cols);
     tex = newTex;
     return newTex;
   }

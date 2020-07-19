@@ -19,12 +19,12 @@ public:
 
   void AddPortals(PPortalVec& pvec) const
   {
-    std::shared_ptr<Portal> p1(new Portal);
-    std::shared_ptr<Portal> p2(new Portal);
-    std::shared_ptr<Portal> p3(new Portal);
-    std::shared_ptr<Portal> p4(new Portal);
-    std::shared_ptr<Portal> p5(new Portal);
-    std::shared_ptr<Portal> p6(new Portal);
+    auto p1 = std::make_shared<Portal>();
+    auto p2 = std::make_shared<Portal>();
+    auto p3 = std::make_shared<Portal>();
+    auto p4 = std::make_shared<Portal>();
+    auto p5 = std::make_shared<Portal>();
+    auto p6 = std::make_shared<Portal>();
 
     p1->pos = Vector3(33, 10, 25.5f) * scale;
     p1->scale = Vector3(4, 10, 1) * scale;
