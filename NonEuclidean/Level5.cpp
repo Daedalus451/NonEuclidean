@@ -40,8 +40,8 @@ void Level5::Load(PObjectVec& objs, PPortalVec& portals, Player& player)
   tunnel2->SetDoor2(*portal4);
   portals.push_back(portal4);
 
-  Portal::Connect(portal1, portal2);
-  Portal::Connect(portal3, portal4);
+  Portal::Connect(*portal1, *portal2);
+  Portal::Connect(*portal3, *portal4);
 
   auto tunnel3 = std::make_shared<Tunnel>(Tunnel::Type::NORMAL);
   tunnel3->pos = Vector3(-1, 0, -4.2f);

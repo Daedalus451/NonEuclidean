@@ -26,7 +26,7 @@ void Level2::Load(PObjectVec& objs, PPortalVec& portals, Player& player)
     house1->SetDoor4(*portal2);
     portals.push_back(portal2);
 
-    Portal::Connect(portal1, portal2);
+    Portal::Connect(*portal1, *portal2);
   }
   else if(num_rooms == 2)
   {
@@ -38,7 +38,7 @@ void Level2::Load(PObjectVec& objs, PPortalVec& portals, Player& player)
     house1->SetDoor4(*portal2);
     portals.push_back(portal2);
 
-    Portal::Connect(portal1, portal2);
+    Portal::Connect(*portal1, *portal2);
   }
   else if(num_rooms == 3)
   {
@@ -50,7 +50,7 @@ void Level2::Load(PObjectVec& objs, PPortalVec& portals, Player& player)
     house1->SetDoor4(*portal2);
     portals.push_back(portal2);
 
-    Portal::Connect(portal1, portal2);
+    Portal::Connect(*portal1, *portal2);
   }
   else if(num_rooms == 4)
   {

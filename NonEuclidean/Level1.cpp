@@ -35,8 +35,8 @@ void Level1::Load(PObjectVec& objs, PPortalVec& portals, Player& player)
   tunnel2->SetDoor2(*portal4);
   portals.push_back(portal4);
 
-  Portal::Connect(portal1, portal2);
-  Portal::Connect(portal3, portal4);
+  Portal::Connect(*portal1, *portal2);
+  Portal::Connect(*portal3, *portal4);
 
   player.SetPosition(Vector3(0, GH::PLAYER_HEIGHT, 5));
 }

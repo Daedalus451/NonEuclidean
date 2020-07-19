@@ -44,8 +44,8 @@ void Level4::Load(PObjectVec& objs, PPortalVec& portals, Player& player)
   portal4->euler.y -= GH::PI;
   portals.push_back(portal4);
 
-  Portal::Connect(portal1, portal4);
-  Portal::Connect(portal2, portal3);
+  Portal::Connect(*portal1, *portal4);
+  Portal::Connect(*portal2, *portal3);
 
   player.SetPosition(Vector3(0, GH::PLAYER_HEIGHT - 2, 8));
 }
