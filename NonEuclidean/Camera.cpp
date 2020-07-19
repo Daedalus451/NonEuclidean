@@ -7,8 +7,6 @@
 #include "GameHeader.h"
 
 Camera::Camera()
-: width(256)
-, height(256)
 {
   worldView.MakeIdentity();
   projection.MakeIdentity();
