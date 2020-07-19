@@ -259,8 +259,8 @@ void Mesh::AddFace(const std::vector<float>& vert_palette, const std::vector<flo
   at -= 1;
   bt -= 1;
   ct -= 1;
-  const uint32_t v_ix[3] = {a, b, c};
-  const uint32_t uv_ix[3] = {at, bt, ct};
+  const std::array<uint32_t, 3> v_ix = {a, b, c};
+  const std::array<uint32_t, 3> uv_ix = {at, bt, ct};
 
   // Calcuate the normal for this face
   const Vector3 v1(&vert_palette[a * 3]);
