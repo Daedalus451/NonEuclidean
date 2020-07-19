@@ -33,9 +33,6 @@ LRESULT WINAPI StaticWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 }
 
 Engine::Engine()
-: hWnd(NULL)
-, hDC(NULL)
-, hRC(NULL)
 {
   GH::ENGINE = this;
   GH::INPUT = &input;
@@ -64,8 +61,8 @@ Engine::Engine()
 
 Engine::~Engine()
 {
-  ClipCursor(NULL);
-  wglMakeCurrent(NULL, NULL);
+  ClipCursor(nullptr);
+  wglMakeCurrent(nullptr, nullptr);
   ReleaseDC(hWnd, hDC);
   wglDeleteContext(hRC);
   DestroyWindow(hWnd);
@@ -90,7 +87,7 @@ int Engine::Run()
   MSG msg;
   while(true)
   {
-    if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+    if(PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
     {
       // Handle windows messages
       if(msg.message == WM_QUIT)
@@ -419,23 +416,23 @@ LRESULT Engine::WindowProc(HWND hCurWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 void Engine::CreateGLWindow()
 {
   WNDCLASSEX wc;
-  hInstance = GetModuleHandle(NULL);
+  hInstance = GetModuleHandle(nullptr);
   wc.cbSize = sizeof(WNDCLASSEX);
   wc.style = CS_OWNDC;
   wc.lpfnWndProc = (WNDPROC) StaticWindowProc;
   wc.cbClsExtra = 0;
   wc.cbWndExtra = 0;
   wc.hInstance = hInstance;
-  wc.hIcon = LoadIcon(NULL, IDI_WINLOGO);
-  wc.hCursor = LoadCursor(NULL, IDC_ARROW);
-  wc.hbrBackground = NULL;
-  wc.lpszMenuName = NULL;
+  wc.hIcon = LoadIcon(nullptr, IDI_WINLOGO);
+  wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
+  wc.hbrBackground = nullptr;
+  wc.lpszMenuName = nullptr;
   wc.lpszClassName = GH::CLASS;
-  wc.hIconSm = NULL;
+  wc.hIconSm = nullptr;
 
   if(!RegisterClassEx(&wc))
   {
-    MessageBoxEx(NULL, "RegisterClass() failed: Cannot register window class.", "Error", MB_OK, 0);
+    MessageBoxEx(nullptr, "RegisterClass() failed: Cannot register window class.", "Error", MB_OK, 0);
     return;
   }
 
@@ -446,11 +443,11 @@ void Engine::CreateGLWindow()
   // Create the window
   hWnd = CreateWindowEx(WS_EX_APPWINDOW | WS_EX_WINDOWEDGE, GH::CLASS, GH::TITLE,
                         WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN, GH::SCREEN_X, GH::SCREEN_Y, iWidth, iHeight,
-                        NULL, NULL, hInstance, NULL);
+                        nullptr, nullptr, hInstance, nullptr);
 
-  if(hWnd == NULL)
+  if(hWnd == nullptr)
   {
-    MessageBoxEx(NULL, "CreateWindow() failed:  Cannot create a window.", "Error", MB_OK, 0);
+    MessageBoxEx(nullptr, "CreateWindow() failed:  Cannot create a window.", "Error", MB_OK, 0);
     return;
   }
 
@@ -469,13 +466,13 @@ void Engine::CreateGLWindow()
   const int pf = ChoosePixelFormat(hDC, &pfd);
   if(pf == 0)
   {
-    MessageBoxEx(NULL, "ChoosePixelFormat() failed: Cannot find a suitable pixel format.", "Error", MB_OK, 0);
+    MessageBoxEx(nullptr, "ChoosePixelFormat() failed: Cannot find a suitable pixel format.", "Error", MB_OK, 0);
     return;
   }
 
   if(SetPixelFormat(hDC, pf, &pfd) == FALSE)
   {
-    MessageBoxEx(NULL, "SetPixelFormat() failed: Cannot set format specified.", "Error", MB_OK, 0);
+    MessageBoxEx(nullptr, "SetPixelFormat() failed: Cannot set format specified.", "Error", MB_OK, 0);
     return;
   }
 
