@@ -4,6 +4,7 @@
 #include <array>
 #include <cmath>
 #include <iostream>
+#include <limits>
 
 #include <GL/wglew.h>
 
@@ -566,7 +567,7 @@ void Engine::ConfineCursor()
 
 float Engine::NearestPortalDist() const
 {
-  float dist = FLT_MAX;
+  float dist = std::numeric_limits<float>::max();
   for(size_t i = 0; i < vPortals.size(); ++i)
   {
     dist = std::min(dist, vPortals[i]->DistTo(player->pos));
