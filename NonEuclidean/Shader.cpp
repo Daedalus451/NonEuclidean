@@ -110,7 +110,8 @@ GLuint Shader::LoadShader(const char* fname, GLenum type)
       ix = str.find(";", ix);
       size_t start_ix = ix;
       while(str[--start_ix] != ' ')
-        ;
+      {
+      }
       attribs.push_back(str.substr(start_ix + 1, ix - start_ix - 1));
     }
   }
@@ -122,7 +123,12 @@ GLuint Shader::LoadShader(const char* fname, GLenum type)
 void Shader::SetMVP(const float* mvp, const float* mv)
 {
   if(mvp)
+  {
     glUniformMatrix4fv(mvpId, 1, GL_TRUE, mvp);
+  }
+
   if(mv)
+  {
     glUniformMatrix4fv(mvId, 1, GL_TRUE, mv);
+  }
 }
