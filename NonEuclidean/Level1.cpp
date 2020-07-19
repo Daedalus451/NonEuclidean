@@ -38,5 +38,5 @@ void Level1::Load(PObjectVec& objs, PPortalVec& portals, Player& player)
   Portal::Connect(portal1, portal2);
   Portal::Connect(portal3, portal4);
 
-  player.SetPosition(Vector3(0, GH_PLAYER_HEIGHT, 5));
+  player.SetPosition(Vector3(0, GH::PLAYER_HEIGHT, 5));
 }

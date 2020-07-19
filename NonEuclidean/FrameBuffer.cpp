@@ -13,7 +13,7 @@ FrameBuffer::FrameBuffer()
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, GH_FBO_SIZE, GH_FBO_SIZE, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, GH::FBO_SIZE, GH::FBO_SIZE, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
   //-------------------------
   glGenFramebuffersEXT(1, &fbo);
   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo);
@@ -21,7 +21,7 @@ FrameBuffer::FrameBuffer()
   //-------------------------
   glGenRenderbuffersEXT(1, &renderBuf);
   glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, renderBuf);
-  glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT16, GH_FBO_SIZE, GH_FBO_SIZE);
+  glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT16, GH::FBO_SIZE, GH::FBO_SIZE);
   //-------------------------
   glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, renderBuf);
   //-------------------------
@@ -45,7 +45,7 @@ void FrameBuffer::Use()
 void FrameBuffer::Render(const Camera& cam, GLuint curFBO, const Portal* skipPortal)
 {
   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo);
-  glViewport(0, 0, GH_FBO_SIZE, GH_FBO_SIZE);
-  GH_ENGINE->Render(cam, fbo, skipPortal);
+  glViewport(0, 0, GH::FBO_SIZE, GH::FBO_SIZE);
+  GH::ENGINE->Render(cam, fbo, skipPortal);
   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, curFBO);
 }

@@ -8,5 +8,5 @@ void Level6::Load(PObjectVec& objs, PPortalVec& portals, Player& player)
   objs.push_back(floorplan);
   floorplan->AddPortals(portals);
 
-  player.SetPosition(Vector3(2, GH_PLAYER_HEIGHT, 2));
+  player.SetPosition(Vector3(2, GH::PLAYER_HEIGHT, 2));
 }

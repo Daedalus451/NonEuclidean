@@ -20,7 +20,7 @@ void Portal::Draw(const Camera& cam, GLuint curFBO)
   assert(euler.z == 0.0f);
 
   // Draw pink to indicate end of render chain
-  if(GH_REC_LEVEL <= 0)
+  if(GH::REC_LEVEL <= 0)
   {
     DrawPink(cam);
     return;
@@ -37,24 +37,24 @@ void Portal::Draw(const Camera& cam, GLuint curFBO)
   }
 
   // Extra clipping to prevent artifacts
-  const float extra_clip = GH_MIN(GH_ENGINE->NearestPortalDist() * 0.5f, 0.1f);
+  const float extra_clip = GH::MIN(GH::ENGINE->NearestPortalDist() * 0.5f, 0.1f);
 
   // Create new portal camera
   Camera portalCam = cam;
   portalCam.ClipOblique(pos - normal * extra_clip, -normal);
   portalCam.worldView *= warp->delta;
-  portalCam.width = GH_FBO_SIZE;
-  portalCam.height = GH_FBO_SIZE;
+  portalCam.width = GH::FBO_SIZE;
+  portalCam.height = GH::FBO_SIZE;
 
   // Render portal's view from new camera
-  frameBuf[GH_REC_LEVEL - 1].Render(portalCam, curFBO, warp->toPortal);
+  frameBuf[GH::REC_LEVEL - 1].Render(portalCam, curFBO, warp->toPortal);
   cam.UseViewport();
 
   // Now we can render the portal texture to the screen
   const Matrix4 mv = LocalToWorld();
   const Matrix4 mvp = cam.Matrix() * mv;
   shader->Use();
-  frameBuf[GH_REC_LEVEL - 1].Use();
+  frameBuf[GH::REC_LEVEL - 1].Use();
   shader->SetMVP(mvp.m.data(), mv.m.data());
   mesh->Draw();
 }
@@ -110,8 +110,8 @@ float Portal::DistTo(const Vector3& pt) const
   const Vector3 y = localToWorld.YAxis();
 
   // Find closest point
-  const float px = GH_CLAMP(v.Dot(x) / x.MagSq(), -1.0f, 1.0f);
-  const float py = GH_CLAMP(v.Dot(y) / y.MagSq(), -1.0f, 1.0f);
+  const float px = GH::CLAMP(v.Dot(x) / x.MagSq(), -1.0f, 1.0f);
+  const float py = GH::CLAMP(v.Dot(y) / y.MagSq(), -1.0f, 1.0f);
   const Vector3 closest = x * px + y * py;
 
   // Calculate distance to closest point

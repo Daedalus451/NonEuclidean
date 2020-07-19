@@ -19,7 +19,7 @@ void Camera::SetSize(int w, int h, float n, float f)
   near_ = n;
   far_ = f;
 
-  const float e = 1.0f / std::tan(GH_FOV * GH_PI / 360.0f);
+  const float e = 1.0f / std::tan(GH::FOV * GH::PI / 360.0f);
   const float a = float(height) / float(width);
   const float d = near_ - far_;
 

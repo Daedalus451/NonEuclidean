@@ -15,11 +15,11 @@
 #include "Level6.h"
 #include "Physical.h"
 
-Engine* GH_ENGINE = nullptr;
-Player* GH_PLAYER = nullptr;
-const Input* GH_INPUT = nullptr;
-int GH_REC_LEVEL = 0;
-int64_t GH_FRAME = 0;
+Engine* GH::ENGINE = nullptr;
+Player* GH::PLAYER = nullptr;
+const Input* GH::INPUT = nullptr;
+int GH::REC_LEVEL = 0;
+int64_t GH::FRAME = 0;
 
 LRESULT WINAPI StaticWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -36,8 +36,8 @@ Engine::Engine()
 , hDC(NULL)
 , hRC(NULL)
 {
-  GH_ENGINE = this;
-  GH_INPUT = &input;
+  GH::ENGINE = this;
+  GH::INPUT = &input;
   isFullscreen = false;
 
   SetProcessDPIAware();
@@ -46,7 +46,7 @@ Engine::Engine()
   SetupInputs();
 
   player.reset(new Player);
-  GH_PLAYER = player.get();
+  GH::PLAYER = player.get();
 
   vScenes.push_back(std::shared_ptr<Scene>(new Level1));
   vScenes.push_back(std::shared_ptr<Scene>(new Level2(3)));
@@ -81,9 +81,9 @@ int Engine::Run()
   SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR) this);
 
   // Setup the timer
-  const int64_t ticks_per_step = timer.SecondsToTicks(GH_DT);
+  const int64_t ticks_per_step = timer.SecondsToTicks(GH::DT);
   int64_t cur_ticks = timer.GetTicks();
-  GH_FRAME = 0;
+  GH::FRAME = 0;
 
   // Game loop
   MSG msg;
@@ -138,23 +138,23 @@ int Engine::Run()
 
       // Used fixed time steps for updates
       const int64_t new_ticks = timer.GetTicks();
-      for(int i = 0; cur_ticks < new_ticks && i < GH_MAX_STEPS; ++i)
+      for(int i = 0; cur_ticks < new_ticks && i < GH::MAX_STEPS; ++i)
       {
         Update();
         cur_ticks += ticks_per_step;
-        GH_FRAME += 1;
+        GH::FRAME += 1;
         input.EndFrame();
       }
       cur_ticks = (cur_ticks < new_ticks ? new_ticks : cur_ticks);
 
       // Setup camera for rendering
-      const float n = GH_CLAMP(NearestPortalDist() * 0.5f, GH_NEAR_MIN, GH_NEAR_MAX);
+      const float n = GH::CLAMP(NearestPortalDist() * 0.5f, GH::NEAR_MIN, GH::NEAR_MAX);
       main_cam.worldView = player->WorldToCam();
-      main_cam.SetSize(iWidth, iHeight, n, GH_FAR);
+      main_cam.SetSize(iWidth, iHeight, n, GH::FAR_DIST);
       main_cam.UseViewport();
 
       // Render scene
-      GH_REC_LEVEL = GH_MAX_RECURSION;
+      GH::REC_LEVEL = GH::MAX_RECURSION;
       Render(main_cam, 0, nullptr);
       SwapBuffers(hDC);
     }
@@ -265,7 +265,7 @@ void Engine::Update()
 void Engine::Render(const Camera& cam, GLuint curFBO, const Portal* skipPortal)
 {
   // Clear buffers
-  if(GH_USE_SKY)
+  if(GH::USE_SKY)
   {
     glClear(GL_DEPTH_BUFFER_BIT);
     sky->Draw(cam);
@@ -276,9 +276,9 @@ void Engine::Render(const Camera& cam, GLuint curFBO, const Portal* skipPortal)
   }
 
   // Create queries (if applicable)
-  std::array<GLuint, GH_MAX_PORTALS> queries{};
-  std::array<GLuint, GH_MAX_PORTALS> drawTest{};
-  assert(vPortals.size() <= GH_MAX_PORTALS);
+  std::array<GLuint, GH::MAX_PORTALS> queries{};
+  std::array<GLuint, GH::MAX_PORTALS> drawTest{};
+  assert(vPortals.size() <= GH::MAX_PORTALS);
   if(occlusionCullingSupported)
   {
     glGenQueriesARB((GLsizei) vPortals.size(), queries.data());
@@ -291,11 +291,11 @@ void Engine::Render(const Camera& cam, GLuint curFBO, const Portal* skipPortal)
   }
 
   // Draw portals if possible
-  if(GH_REC_LEVEL > 0)
+  if(GH::REC_LEVEL > 0)
   {
     // Draw portals
-    GH_REC_LEVEL -= 1;
-    if(occlusionCullingSupported && GH_REC_LEVEL > 0)
+    GH::REC_LEVEL -= 1;
+    if(occlusionCullingSupported && GH::REC_LEVEL > 0)
     {
       glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
       glDepthMask(GL_FALSE);
@@ -323,7 +323,7 @@ void Engine::Render(const Camera& cam, GLuint curFBO, const Portal* skipPortal)
     {
       if(vPortals[i].get() != skipPortal)
       {
-        if(occlusionCullingSupported && (GH_REC_LEVEL > 0) && (drawTest[i] == 0))
+        if(occlusionCullingSupported && (GH::REC_LEVEL > 0) && (drawTest[i] == 0))
         {
           continue;
         }
@@ -333,7 +333,7 @@ void Engine::Render(const Camera& cam, GLuint curFBO, const Portal* skipPortal)
         }
       }
     }
-    GH_REC_LEVEL += 1;
+    GH::REC_LEVEL += 1;
   }
 
 #if 0
@@ -424,7 +424,7 @@ void Engine::CreateGLWindow()
   wc.hCursor = LoadCursor(NULL, IDC_ARROW);
   wc.hbrBackground = NULL;
   wc.lpszMenuName = NULL;
-  wc.lpszClassName = GH_CLASS;
+  wc.lpszClassName = GH::CLASS;
   wc.hIconSm = NULL;
 
   if(!RegisterClassEx(&wc))
@@ -434,12 +434,12 @@ void Engine::CreateGLWindow()
   }
 
   // Always start in windowed mode
-  iWidth = GH_SCREEN_WIDTH;
-  iHeight = GH_SCREEN_HEIGHT;
+  iWidth = GH::SCREEN_WIDTH;
+  iHeight = GH::SCREEN_HEIGHT;
 
   // Create the window
-  hWnd = CreateWindowEx(WS_EX_APPWINDOW | WS_EX_WINDOWEDGE, GH_CLASS, GH_TITLE,
-                        WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN, GH_SCREEN_X, GH_SCREEN_Y, iWidth, iHeight,
+  hWnd = CreateWindowEx(WS_EX_APPWINDOW | WS_EX_WINDOWEDGE, GH::CLASS, GH::TITLE,
+                        WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN, GH::SCREEN_X, GH::SCREEN_Y, iWidth, iHeight,
                         NULL, NULL, hInstance, NULL);
 
   if(hWnd == NULL)
@@ -478,11 +478,11 @@ void Engine::CreateGLWindow()
   hRC = wglCreateContext(hDC);
   wglMakeCurrent(hDC, hRC);
 
-  if(GH_START_FULLSCREEN)
+  if(GH::START_FULLSCREEN)
   {
     ToggleFullscreen();
   }
-  if(GH_HIDE_MOUSE)
+  if(GH::HIDE_MOUSE)
   {
     ShowCursor(FALSE);
   }
@@ -551,7 +551,7 @@ void Engine::SetupInputs()
 
 void Engine::ConfineCursor()
 {
-  if(GH_HIDE_MOUSE)
+  if(GH::HIDE_MOUSE)
   {
     RECT rect;
     GetWindowRect(hWnd, &rect);
@@ -564,7 +564,7 @@ float Engine::NearestPortalDist() const
   float dist = FLT_MAX;
   for(size_t i = 0; i < vPortals.size(); ++i)
   {
-    dist = GH_MIN(dist, vPortals[i]->DistTo(player->pos));
+    dist = GH::MIN(dist, vPortals[i]->DistTo(player->pos));
   }
   return dist;
 }
@@ -582,10 +582,10 @@ void Engine::ToggleFullscreen()
   }
   else
   {
-    iWidth = GH_SCREEN_WIDTH;
-    iHeight = GH_SCREEN_HEIGHT;
+    iWidth = GH::SCREEN_WIDTH;
+    iHeight = GH::SCREEN_HEIGHT;
     SetWindowLong(hWnd, GWL_STYLE, WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN);
     SetWindowLong(hWnd, GWL_EXSTYLE, WS_EX_APPWINDOW | WS_EX_WINDOWEDGE);
-    SetWindowPos(hWnd, HWND_TOP, GH_SCREEN_X, GH_SCREEN_Y, iWidth, iHeight, SWP_SHOWWINDOW);
+    SetWindowPos(hWnd, HWND_TOP, GH::SCREEN_X, GH::SCREEN_Y, iWidth, iHeight, SWP_SHOWWINDOW);
   }
 }

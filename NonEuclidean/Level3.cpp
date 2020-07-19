@@ -21,7 +21,7 @@ void Level3::Load(PObjectVec& objs, PPortalVec& portals, Player& player)
   std::shared_ptr<Statue> statue1(new Statue("teapot.obj"));
   statue1->pos = Vector3(0, 0.5f, 9);
   statue1->scale = Vector3(0.5f);
-  statue1->euler.y = GH_PI / 2;
+  statue1->euler.y = GH::PI / 2;
   objs.push_back(statue1);
 
   // Room 2
@@ -41,7 +41,7 @@ void Level3::Load(PObjectVec& objs, PPortalVec& portals, Player& player)
   std::shared_ptr<Statue> statue2(new Statue("bunny.obj"));
   statue2->pos = Vector3(200, -0.4f, 9);
   statue2->scale = Vector3(14.0f);
-  statue2->euler.y = GH_PI;
+  statue2->euler.y = GH::PI;
   objs.push_back(statue2);
 
   // Room 3
@@ -61,7 +61,7 @@ void Level3::Load(PObjectVec& objs, PPortalVec& portals, Player& player)
   std::shared_ptr<Statue> statue3(new Statue("suzanne.obj"));
   statue3->pos = Vector3(400, 0.9f, 9);
   statue3->scale = Vector3(1.2f);
-  statue3->euler.y = GH_PI;
+  statue3->euler.y = GH::PI;
   objs.push_back(statue3);
 
   // Portals
@@ -81,5 +81,5 @@ void Level3::Load(PObjectVec& objs, PPortalVec& portals, Player& player)
   Portal::Connect(portal2->front, portal3->back);
   Portal::Connect(portal3->front, portal1->back);
 
-  player.SetPosition(Vector3(0, GH_PLAYER_HEIGHT, 3));
+  player.SetPosition(Vector3(0, GH::PLAYER_HEIGHT, 3));
 }

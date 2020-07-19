@@ -37,15 +37,15 @@ public:
 
     p4->pos = Vector3(63.5f, 10, 48) * scale;
     p4->scale = Vector3(4, 10, 1) * scale;
-    p4->euler.y = GH_PI / 2;
+    p4->euler.y = GH::PI / 2;
 
     p5->pos = Vector3(63.5f, 10, 7) * scale;
     p5->scale = Vector3(4, 10, 1) * scale;
-    p5->euler.y = GH_PI / 2;
+    p5->euler.y = GH::PI / 2;
 
     p6->pos = Vector3(22.5f, 10, 48) * scale;
     p6->scale = Vector3(4, 10, 1) * scale;
-    p6->euler.y = GH_PI / 2;
+    p6->euler.y = GH::PI / 2;
 
     Portal::Connect(p1->front, p3->back);
     Portal::Connect(p1->back, p2->front);
