@@ -276,8 +276,8 @@ void Engine::Render(const Camera& cam, GLuint curFBO, const Portal* skipPortal)
   }
 
   // Create queries (if applicable)
-  std::array<GLuint, GH_MAX_PORTALS> queries;
-  std::array<GLuint, GH_MAX_PORTALS> drawTest;
+  std::array<GLuint, GH_MAX_PORTALS> queries{};
+  std::array<GLuint, GH_MAX_PORTALS> drawTest{};
   assert(vPortals.size() <= GH_MAX_PORTALS);
   if(occlusionCullingSupported)
   {
@@ -347,7 +347,7 @@ void Engine::Render(const Camera& cam, GLuint curFBO, const Portal* skipPortal)
 LRESULT Engine::WindowProc(HWND hCurWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
   static PAINTSTRUCT ps;
-  static std::array<BYTE, 256> lpb;
+  static std::array<BYTE, 256> lpb{};
   static UINT dwSize = static_cast<UINT>(lpb.size());
 
   switch(uMsg)
@@ -526,7 +526,7 @@ void Engine::SetupInputs()
   static const int HID_USAGE_GENERIC_JOYSTICK = 0x04;
   static const int HID_USAGE_GENERIC_GAMEPAD = 0x05;
 
-  std::array<RAWINPUTDEVICE, 3> Rid;
+  std::array<RAWINPUTDEVICE, 3> Rid{};
 
   // Mouse
   Rid[0].usUsagePage = HID_USAGE_PAGE_GENERIC;

@@ -20,7 +20,7 @@ Texture::Texture(const char* fname, int rows, int cols)
   }
 
   // Read the bitmap
-  std::array<char, 54> input;
+  std::array<char, 54> input{};
   fin.read(input.data(), 54);
   const GLsizei width = *reinterpret_cast<int32_t*>(&input[18]);
   const GLsizei height = *reinterpret_cast<int32_t*>(&input[22]);
@@ -43,7 +43,7 @@ Texture::Texture(const char* fname, int rows, int cols)
     const int padding = (width * 3) % 4;
     if(padding)
     {
-      std::array<char, 3> junk;
+      std::array<char, 3> junk{};
       fin.read(junk.data(), 4 - padding);
     }
   }

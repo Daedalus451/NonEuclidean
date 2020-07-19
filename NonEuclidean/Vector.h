@@ -838,7 +838,7 @@ public:
   }
 
   // Components
-  std::array<float, 16> m;
+  std::array<float, 16> m{};
 };
 
 // Debug printing

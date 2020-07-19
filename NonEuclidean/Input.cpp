@@ -23,7 +23,7 @@ void Input::EndFrame()
 
 void Input::UpdateRaw(const tagRAWINPUT* raw)
 {
-  static std::array<BYTE, 2048> buffer;
+  static std::array<BYTE, 2048> buffer{};
   static UINT buffer_size = static_cast<UINT>(buffer.size());
 
   if(raw->header.dwType == RIM_TYPEMOUSE)
