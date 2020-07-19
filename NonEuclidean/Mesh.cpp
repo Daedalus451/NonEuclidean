@@ -53,7 +53,7 @@ Mesh::Mesh(const char* fname)
       uint32_t a = 0, b = 0, c = 0;
       if(line[2] == '*')
       {
-        const uint32_t v_ix = (uint32_t) vert_palette.size() / 3;
+        const uint32_t v_ix = static_cast<uint32_t>(vert_palette.size()) / 3;
         a = v_ix - 2;
         b = v_ix - 1;
         c = v_ix;
@@ -100,8 +100,8 @@ Mesh::Mesh(const char* fname)
       if(wild)
       {
         assert(num_slashes == 0);
-        const uint32_t v_ix = (uint32_t) vert_palette.size() / 3;
-        const uint32_t t_ix = (uint32_t) uv_palette.size() / (is3DTex ? 3 : 2);
+        const uint32_t v_ix = static_cast<uint32_t>(vert_palette.size()) / 3;
+        const uint32_t t_ix = static_cast<uint32_t>(uv_palette.size()) / (is3DTex ? 3 : 2);
         if(wild2)
         {
           a = v_ix - 3;

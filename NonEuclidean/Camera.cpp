@@ -20,7 +20,7 @@ void Camera::SetSize(int w, int h, float n, float f)
   far_ = f;
 
   const float e = 1.0f / std::tan(GH::FOV * GH::PI / 360.0f);
-  const float a = float(height) / float(width);
+  const float a = static_cast<float>(height) / static_cast<float>(width);
   const float d = near_ - far_;
 
   projection.m[0] = e * a;

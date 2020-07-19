@@ -21,7 +21,7 @@ Shader::Shader(const char* name)
   // Bind variables
   for(size_t i = 0; i < attribs.size(); ++i)
   {
-    glBindAttribLocation(progId, (GLuint) i, attribs[i].c_str());
+    glBindAttribLocation(progId, static_cast<GLuint>(i), attribs[i].c_str());
   }
 
   // Link the program
