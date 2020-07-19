@@ -24,7 +24,7 @@ int64_t GH::FRAME = 0;
 
 LRESULT WINAPI StaticWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-  Engine* eng = (Engine*) GetWindowLongPtr(hWnd, GWLP_USERDATA);
+  Engine* eng = reinterpret_cast<Engine*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
   if(eng)
   {
     return eng->WindowProc(hWnd, uMsg, wParam, lParam);
@@ -79,7 +79,7 @@ int Engine::Run()
   }
 
   // Recieve events from this window
-  SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR) this);
+  SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
 
   // Setup the timer
   const int64_t ticks_per_step = timer.SecondsToTicks(GH::DT);
@@ -404,8 +404,8 @@ LRESULT Engine::WindowProc(HWND hCurWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 
     case WM_INPUT:
       dwSize = static_cast<UINT>(lpb.size());
-      GetRawInputData((HRAWINPUT) lParam, RID_INPUT, lpb.data(), &dwSize, sizeof(RAWINPUTHEADER));
-      input.UpdateRaw((const RAWINPUT*) lpb.data());
+      GetRawInputData(reinterpret_cast<HRAWINPUT>(lParam), RID_INPUT, lpb.data(), &dwSize, sizeof(RAWINPUTHEADER));
+      input.UpdateRaw(reinterpret_cast<const RAWINPUT*>(lpb.data()));
       break;
 
     case WM_CLOSE:
