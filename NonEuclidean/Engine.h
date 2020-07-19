@@ -43,14 +43,14 @@ private:
   void ConfineCursor();
   void ToggleFullscreen();
 
-  HDC hDC; // device context
-  HGLRC hRC; // opengl context
-  HWND hWnd; // window
-  HINSTANCE hInstance; // process id
+  HDC hDC = nullptr; // device context
+  HGLRC hRC = nullptr; // opengl context
+  HWND hWnd = nullptr; // window
+  HINSTANCE hInstance = nullptr; // process id
 
-  LONG iWidth; // window width
-  LONG iHeight; // window height
-  bool isFullscreen; // fullscreen state
+  LONG iWidth = 0; // window width
+  LONG iHeight = 0; // window height
+  bool isFullscreen = false; // fullscreen state
 
   Camera main_cam;
   Input input;
@@ -61,7 +61,7 @@ private:
   std::shared_ptr<Sky> sky;
   std::shared_ptr<Player> player;
 
-  GLint occlusionCullingSupported;
+  GLint occlusionCullingSupported = 0;
 
   std::vector<std::shared_ptr<Scene>> vScenes;
   std::shared_ptr<Scene> curScene;

@@ -13,5 +13,5 @@ public:
   virtual void Load(PObjectVec& objs, PPortalVec& portals, Player& player) override;
 
 private:
-  int num_rooms;
+  int num_rooms = 0;
 };

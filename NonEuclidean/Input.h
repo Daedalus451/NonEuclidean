@@ -17,10 +17,10 @@ public:
   // Mouse
   bool mouse_button[3];
   bool mouse_button_press[3];
-  float mouse_dx;
-  float mouse_dy;
-  float mouse_ddx;
-  float mouse_ddy;
+  float mouse_dx = 0.0f;
+  float mouse_dy = 0.0f;
+  float mouse_ddx = 0.0f;
+  float mouse_ddy = 0.0f;
 
   // Joystick
   // TODO:

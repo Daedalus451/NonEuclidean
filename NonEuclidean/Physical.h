@@ -31,10 +31,10 @@ public:
 
   Vector3 gravity;
   Vector3 velocity;
-  float bounce;
-  float friction;
-  float high_friction;
-  float drag;
+  float bounce = 0.0f;
+  float friction = 0.0f;
+  float high_friction = 0.0f;
+  float drag = 0.0f;
 
   Vector3 prev_pos;
 

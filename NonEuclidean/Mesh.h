@@ -26,7 +26,7 @@ private:
   void AddFace(const std::vector<float>& vert_palette, const std::vector<float>& uv_palette, uint32_t a, uint32_t at,
                uint32_t b, uint32_t bt, uint32_t c, uint32_t ct, bool is3DTex);
 
-  GLuint vao;
+  GLuint vao = 0;
   GLuint vbo[NUM_VBOS];
 
   std::vector<float> verts;

@@ -31,5 +31,5 @@ public:
   }
 
   Vector3 center;
-  float radius;
+  float radius = 0.0f;
 };

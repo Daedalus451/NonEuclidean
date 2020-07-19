@@ -21,8 +21,8 @@ public:
   Matrix4 projection;
   Matrix4 worldView;
 
-  int width;
-  int height;
-  float near_;
-  float far_;
+  int width = 0;
+  int height = 0;
+  float near_ = 0.0f;
+  float far_ = 0.0f;
 };

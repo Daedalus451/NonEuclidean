@@ -61,5 +61,5 @@ public:
   }
 
 private:
-  Type type;
+  Type type = Type::NORMAL;
 };

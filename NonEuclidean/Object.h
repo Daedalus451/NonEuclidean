@@ -48,7 +48,7 @@ public:
   Vector3 scale;
 
   // Physical scale, only updated by portal scale changes
-  float p_scale;
+  float p_scale = 1.0f;
 
   std::shared_ptr<Mesh> mesh;
   std::shared_ptr<Texture> texture;

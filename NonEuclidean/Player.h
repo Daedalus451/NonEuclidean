@@ -23,11 +23,11 @@ public:
   Vector3 CamOffset() const;
 
 private:
-  float cam_rx;
-  float cam_ry;
+  float cam_rx = 0.0f;
+  float cam_ry = 0.0f;
 
-  float bob_mag;
-  float bob_phi;
+  float bob_mag = 0.0f;
+  float bob_phi = 0.0f;
 
-  bool onGround;
+  bool onGround = true;
 };

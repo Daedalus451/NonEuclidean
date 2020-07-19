@@ -10,6 +10,6 @@ public:
   void Use();
 
 private:
-  GLuint texId;
-  bool is3D;
+  GLuint texId = 0;
+  bool is3D = false;
 };

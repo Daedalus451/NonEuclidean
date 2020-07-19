@@ -238,7 +238,9 @@ public:
   }
 
   // Components
-  float x, y, z;
+  float x = 0.0f;
+  float y = 0.0f;
+  float z = 0.0f;
 };
 inline Vector3 operator/(float b, const Vector3& v)
 {
@@ -321,7 +323,10 @@ public:
   }
 
   // Components
-  float x, y, z, w;
+  float x = 0.0f;
+  float y = 0.0f;
+  float z = 0.0f;
+  float w = 0.0f;
 };
 
 class Matrix4

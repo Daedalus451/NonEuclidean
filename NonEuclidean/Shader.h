@@ -18,9 +18,9 @@ private:
   GLuint LoadShader(const char* fname, GLenum type);
 
   std::vector<std::string> attribs;
-  GLuint vertId;
-  GLuint fragId;
-  GLuint progId;
-  GLuint mvpId;
-  GLuint mvId;
+  GLuint vertId = 0;
+  GLuint fragId = 0;
+  GLuint progId = 0;
+  GLuint mvpId = 0;
+  GLuint mvId = 0;
 };

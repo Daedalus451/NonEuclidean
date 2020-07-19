@@ -15,7 +15,7 @@ public:
   void Use();
 
 private:
-  GLuint texId;
-  GLuint fbo;
-  GLuint renderBuf;
+  GLuint texId = 0;
+  GLuint fbo = 0;
+  GLuint renderBuf = 0;
 };
