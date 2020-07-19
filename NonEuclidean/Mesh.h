@@ -11,8 +11,6 @@
 class Mesh
 {
 public:
-  static const int NUM_VBOS = 3;
-
   Mesh(const char* fname);
   ~Mesh();
 
@@ -27,7 +25,7 @@ private:
                uint32_t b, uint32_t bt, uint32_t c, uint32_t ct, bool is3DTex);
 
   GLuint vao = 0;
-  std::array<GLuint, NUM_VBOS> vbo{};
+  std::array<GLuint, 3> vbo{};
 
   std::vector<float> verts;
   std::vector<float> uvs;

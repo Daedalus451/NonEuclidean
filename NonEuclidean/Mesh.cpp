@@ -194,7 +194,7 @@ Mesh::Mesh(const char* fname)
   glGenVertexArrays(1, &vao);
   glBindVertexArray(vao);
 
-  glGenBuffers(NUM_VBOS, vbo.data());
+  glGenBuffers(static_cast<GLsizei>(vbo.size()), vbo.data());
   {
     glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
     glBufferData(GL_ARRAY_BUFFER, verts.size() * sizeof(verts[0]), verts.data(), GL_STATIC_DRAW);
@@ -217,7 +217,7 @@ Mesh::Mesh(const char* fname)
 
 Mesh::~Mesh()
 {
-  glDeleteBuffers(NUM_VBOS, vbo.data());
+  glDeleteBuffers(static_cast<GLsizei>(vbo.size()), vbo.data());
   glDeleteVertexArrays(1, &vao);
 }
 

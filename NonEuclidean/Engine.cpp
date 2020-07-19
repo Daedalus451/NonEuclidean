@@ -526,10 +526,10 @@ void Engine::DestroyGLObjects()
 
 void Engine::SetupInputs()
 {
-  static const int HID_USAGE_PAGE_GENERIC = 0x01;
-  static const int HID_USAGE_GENERIC_MOUSE = 0x02;
-  static const int HID_USAGE_GENERIC_JOYSTICK = 0x04;
-  static const int HID_USAGE_GENERIC_GAMEPAD = 0x05;
+  constexpr int HID_USAGE_PAGE_GENERIC = 0x01;
+  constexpr int HID_USAGE_GENERIC_MOUSE = 0x02;
+  constexpr int HID_USAGE_GENERIC_JOYSTICK = 0x04;
+  constexpr int HID_USAGE_GENERIC_GAMEPAD = 0x05;
 
   std::array<RAWINPUTDEVICE, 3> Rid{};
 
