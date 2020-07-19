@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#define NOMINMAX
+
 #include <Windows.h>
 
 #include "GameHeader.h"

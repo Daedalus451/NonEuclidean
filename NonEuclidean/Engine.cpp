@@ -148,7 +148,7 @@ int Engine::Run()
       cur_ticks = (cur_ticks < new_ticks ? new_ticks : cur_ticks);
 
       // Setup camera for rendering
-      const float n = GH::CLAMP(NearestPortalDist() * 0.5f, GH::NEAR_MIN, GH::NEAR_MAX);
+      const float n = std::clamp(NearestPortalDist() * 0.5f, GH::NEAR_MIN, GH::NEAR_MAX);
       main_cam.worldView = player->WorldToCam();
       main_cam.SetSize(iWidth, iHeight, n, GH::FAR_DIST);
       main_cam.UseViewport();
@@ -564,7 +564,7 @@ float Engine::NearestPortalDist() const
   float dist = FLT_MAX;
   for(size_t i = 0; i < vPortals.size(); ++i)
   {
-    dist = GH::MIN(dist, vPortals[i]->DistTo(player->pos));
+    dist = std::min(dist, vPortals[i]->DistTo(player->pos));
   }
   return dist;
 }

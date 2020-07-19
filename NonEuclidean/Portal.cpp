@@ -1,5 +1,6 @@
 #include "Portal.h"
 
+#include <algorithm>
 #include <cassert>
 #include <iostream>
 
@@ -37,7 +38,7 @@ void Portal::Draw(const Camera& cam, GLuint curFBO)
   }
 
   // Extra clipping to prevent artifacts
-  const float extra_clip = GH::MIN(GH::ENGINE->NearestPortalDist() * 0.5f, 0.1f);
+  const float extra_clip = std::min(GH::ENGINE->NearestPortalDist() * 0.5f, 0.1f);
 
   // Create new portal camera
   Camera portalCam = cam;
@@ -110,8 +111,8 @@ float Portal::DistTo(const Vector3& pt) const
   const Vector3 y = localToWorld.YAxis();
 
   // Find closest point
-  const float px = GH::CLAMP(v.Dot(x) / x.MagSq(), -1.0f, 1.0f);
-  const float py = GH::CLAMP(v.Dot(y) / y.MagSq(), -1.0f, 1.0f);
+  const float px = std::clamp(v.Dot(x) / x.MagSq(), -1.0f, 1.0f);
+  const float py = std::clamp(v.Dot(y) / y.MagSq(), -1.0f, 1.0f);
   const Vector3 closest = x * px + y * py;
 
   // Calculate distance to closest point

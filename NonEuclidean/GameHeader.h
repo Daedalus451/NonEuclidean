@@ -54,24 +54,4 @@ extern Player* PLAYER;
 extern const Input* INPUT;
 extern int REC_LEVEL;
 extern int64_t FRAME;
-
-// Functions
-template <class T>
-inline T CLAMP(T a, T mn, T mx)
-{
-  return a < mn ? mn : (a > mx ? mx : a);
-}
-
-template <class T>
-inline T MIN(T a, T b)
-{
-  return a < b ? a : b;
-}
-
-template <class T>
-inline T MAX(T a, T b)
-{
-  return a > b ? a : b;
-}
-
 } // namespace GH

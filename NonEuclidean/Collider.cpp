@@ -1,5 +1,6 @@
 #include "Collider.h"
 
+#include <algorithm>
 #include <cassert>
 #include <iostream>
 
@@ -40,8 +41,8 @@ bool Collider::Collide(const Matrix4& localToUnit, Vector3& delta) const
   const Vector3 y = local.YAxis();
 
   // Find closest point
-  const float px = GH::CLAMP(v.Dot(x) / x.MagSq(), -1.0f, 1.0f);
-  const float py = GH::CLAMP(v.Dot(y) / y.MagSq(), -1.0f, 1.0f);
+  const float px = std::clamp(v.Dot(x) / x.MagSq(), -1.0f, 1.0f);
+  const float py = std::clamp(v.Dot(y) / y.MagSq(), -1.0f, 1.0f);
   const Vector3 closest = x * px + y * py;
 
   // Calculate distance to closest point

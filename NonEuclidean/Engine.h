@@ -3,6 +3,8 @@
 #include <memory>
 #include <vector>
 
+#define NOMINMAX
+
 #include <GL/glew.h>
 #include <Windows.h>
 

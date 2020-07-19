@@ -1,5 +1,7 @@
 #include "Physical.h"
 
+#include <algorithm>
+
 #include "GameHeader.h"
 
 Physical::Physical()
@@ -43,7 +45,7 @@ void Physical::OnCollide(Object& other, const Vector3& push)
   if(high_friction > 0.0f)
   {
     const float vel_ratio = velocity.Mag() / (high_friction * p_scale);
-    kinetic_friction = GH::MIN(friction * (vel_ratio + 5.0f) / (vel_ratio + 1.0f), 1.0f);
+    kinetic_friction = std::min(friction * (vel_ratio + 5.0f) / (vel_ratio + 1.0f), 1.0f);
   }
 
   // Update velocity to react to collision
