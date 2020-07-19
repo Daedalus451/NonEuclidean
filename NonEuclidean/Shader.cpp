@@ -28,11 +28,11 @@ Shader::Shader(const char* name)
   glLinkProgram(progId);
 
   // Check for linking errors
-  GLint isLinked;
+  GLint isLinked = 0;
   glGetProgramiv(progId, GL_LINK_STATUS, &isLinked);
   if(!isLinked)
   {
-    GLint logLength;
+    GLint logLength = 0;
     glGetProgramiv(progId, GL_INFO_LOG_LENGTH, &logLength);
 
     std::vector<GLchar> log;
@@ -84,7 +84,7 @@ GLuint Shader::LoadShader(const char* fname, GLenum type)
   glGetShaderiv(id, GL_COMPILE_STATUS, &isCompiled);
   if(!isCompiled)
   {
-    GLint logLength;
+    GLint logLength = 0;
     glGetShaderiv(id, GL_INFO_LOG_LENGTH, &logLength);
 
     std::vector<GLchar> log;

@@ -29,7 +29,9 @@ Mesh::Mesh(const char* fname)
     if(line.find("v ") == 0)
     {
       std::stringstream ss(line.c_str() + 2);
-      float x, y, z;
+      float x = 0.0f;
+      float y = 0.0f;
+      float z = 0.0f;
       ss >> x >> y >> z;
       vert_palette.push_back(x);
       vert_palette.push_back(y);
@@ -38,7 +40,9 @@ Mesh::Mesh(const char* fname)
     else if(line.find("vt ") == 0)
     {
       std::stringstream ss(line.c_str() + 3);
-      float u, v, w;
+      float u = 0.0f;
+      float v = 0.0f;
+      float w = 0.0f;
       ss >> u >> v >> w;
       uv_palette.push_back(u);
       uv_palette.push_back(v);
@@ -50,7 +54,9 @@ Mesh::Mesh(const char* fname)
     }
     else if(line.find("c ") == 0)
     {
-      uint32_t a = 0, b = 0, c = 0;
+      uint32_t a = 0;
+      uint32_t b = 0;
+      uint32_t c = 0;
       if(line[2] == '*')
       {
         const uint32_t v_ix = static_cast<uint32_t>(vert_palette.size()) / 3;
@@ -88,9 +94,15 @@ Mesh::Mesh(const char* fname)
           num_slashes++;
         }
       }
-      uint32_t a = 0, b = 0, c = 0, d = 0;
-      uint32_t at = 0, bt = 0, ct = 0, dt = 0;
-      uint32_t _tmp;
+      uint32_t a = 0;
+      uint32_t b = 0;
+      uint32_t c = 0;
+      uint32_t d = 0;
+      uint32_t at = 0;
+      uint32_t bt = 0;
+      uint32_t ct = 0;
+      uint32_t dt = 0;
+      uint32_t _tmp = 0;
       std::stringstream ss(line.c_str() + 2);
       const bool wild = (line[2] == '*');
       const bool wild2 = (line[3] == '*');
