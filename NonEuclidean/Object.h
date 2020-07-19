@@ -54,4 +54,4 @@ public:
   std::shared_ptr<Shader> shader;
 };
 
-typedef std::vector<std::shared_ptr<Object>> PObjectVec;
+using PObjectVec = std::vector<std::shared_ptr<Object>>;

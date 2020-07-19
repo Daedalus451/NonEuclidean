@@ -50,4 +50,4 @@ private:
   std::array<FrameBuffer, GH::MAX_RECURSION <= 1 ? 1 : GH::MAX_RECURSION - 1> frameBuf{};
 };
 
-typedef std::vector<std::shared_ptr<Portal>> PPortalVec;
+using PPortalVec = std::vector<std::shared_ptr<Portal>>;
