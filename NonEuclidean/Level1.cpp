@@ -5,12 +5,12 @@
 
 void Level1::Load(PObjectVec& objs, PPortalVec& portals, Player& player)
 {
-  std::shared_ptr<Tunnel> tunnel1(new Tunnel(Tunnel::NORMAL));
+  std::shared_ptr<Tunnel> tunnel1(new Tunnel(Tunnel::Type::NORMAL));
   tunnel1->pos = Vector3(-2.4f, 0, -1.8f);
   tunnel1->scale = Vector3(1, 1, 4.8f);
   objs.push_back(tunnel1);
 
-  std::shared_ptr<Tunnel> tunnel2(new Tunnel(Tunnel::NORMAL));
+  std::shared_ptr<Tunnel> tunnel2(new Tunnel(Tunnel::Type::NORMAL));
   tunnel2->pos = Vector3(2.4f, 0, 0);
   tunnel2->scale = Vector3(1, 1, 0.6f);
   objs.push_back(tunnel2);

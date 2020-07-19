@@ -5,7 +5,7 @@
 class Tunnel : public Object
 {
 public:
-  enum Type
+  enum class Type
   {
     NORMAL = 0,
     SCALE = 1,
@@ -15,11 +15,11 @@ public:
   Tunnel(Type type)
   : type(type)
   {
-    if(type == SCALE)
+    if(type == Type::SCALE)
     {
       mesh = AquireMesh("tunnel_scale.obj");
     }
-    else if(type == SLOPE)
+    else if(type == Type::SLOPE)
     {
       mesh = AquireMesh("tunnel_slope.obj");
     }
@@ -43,12 +43,12 @@ public:
   void SetDoor2(Object& portal) const
   {
     portal.euler = euler;
-    if(type == SCALE)
+    if(type == Type::SCALE)
     {
       portal.pos = LocalToWorld().MulPoint(Vector3(0, 0.5f, -1));
       portal.scale = Vector3(0.3f, 0.499f, 0.5f) * scale.x;
     }
-    else if(type == SLOPE)
+    else if(type == Type::SLOPE)
     {
       portal.pos = LocalToWorld().MulPoint(Vector3(0, -1, -1));
       portal.scale = Vector3(0.6f, 0.999f, 1) * scale.x;

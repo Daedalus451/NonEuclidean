@@ -5,7 +5,7 @@
 
 void Level5::Load(PObjectVec& objs, PPortalVec& portals, Player& player)
 {
-  std::shared_ptr<Tunnel> tunnel1(new Tunnel(Tunnel::SCALE));
+  std::shared_ptr<Tunnel> tunnel1(new Tunnel(Tunnel::Type::SCALE));
   tunnel1->pos = Vector3(-1.2f, 0, 0);
   tunnel1->scale = Vector3(1, 1, 2.4f);
   objs.push_back(tunnel1);
@@ -14,7 +14,7 @@ void Level5::Load(PObjectVec& objs, PPortalVec& portals, Player& player)
   ground1->scale *= 1.2f;
   objs.push_back(ground1);
 
-  std::shared_ptr<Tunnel> tunnel2(new Tunnel(Tunnel::NORMAL));
+  std::shared_ptr<Tunnel> tunnel2(new Tunnel(Tunnel::Type::NORMAL));
   tunnel2->pos = Vector3(201.2f, 0, 0);
   tunnel2->scale = Vector3(1, 1, 2.4f);
   objs.push_back(tunnel2);
@@ -43,7 +43,7 @@ void Level5::Load(PObjectVec& objs, PPortalVec& portals, Player& player)
   Portal::Connect(portal1, portal2);
   Portal::Connect(portal3, portal4);
 
-  std::shared_ptr<Tunnel> tunnel3(new Tunnel(Tunnel::NORMAL));
+  std::shared_ptr<Tunnel> tunnel3(new Tunnel(Tunnel::Type::NORMAL));
   tunnel3->pos = Vector3(-1, 0, -4.2f);
   tunnel3->scale = Vector3(0.25f, 0.25f, 0.6f);
   tunnel3->euler.y = GH_PI / 2;
