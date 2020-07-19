@@ -8,12 +8,11 @@ class Physical : public Object
 {
 public:
   Physical();
-  virtual ~Physical() override
-  {
-  }
 
-  virtual void Reset() override;
-  virtual void Update() override;
+  ~Physical() override = default;
+
+  void Reset() override;
+  void Update() override;
   virtual void OnCollide(Object& other, const Vector3& push);
 
   void SetPosition(const Vector3& _pos)
@@ -24,7 +23,7 @@ public:
 
   bool TryPortal(const Portal& portal);
 
-  virtual Physical* AsPhysical() override
+  Physical* AsPhysical() override
   {
     return this;
   }

@@ -13,9 +13,8 @@ public:
     texture = AquireTexture(tex);
     scale = Vector3(1.0f, 3.0f, 1.0f);
   }
-  virtual ~House()
-  {
-  }
+
+  ~House() override = default;
 
   void SetDoor1(Object& portal) const
   {

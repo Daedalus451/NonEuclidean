@@ -13,7 +13,5 @@ public:
     texture = AquireTexture("white.bmp");
     scale = Vector3(0.1f);
   }
-  virtual ~Pillar()
-  {
-  }
+  ~Pillar() override = default;
 };

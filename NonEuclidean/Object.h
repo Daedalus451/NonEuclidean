@@ -18,9 +18,8 @@ class Object
 {
 public:
   Object();
-  virtual ~Object()
-  {
-  }
+
+  virtual ~Object() = default;
 
   virtual void Reset();
   virtual void Draw(const Camera& cam, uint32_t curFBO);

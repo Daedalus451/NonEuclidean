@@ -30,9 +30,8 @@ public:
     shader = AquireShader("texture");
     texture = AquireTexture("checker_gray.bmp");
   }
-  virtual ~Tunnel()
-  {
-  }
+
+  ~Tunnel() override = default;
 
   void SetDoor1(Object& portal) const
   {

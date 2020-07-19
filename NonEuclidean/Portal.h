@@ -30,11 +30,9 @@ public:
   };
 
   Portal();
-  virtual ~Portal()
-  {
-  }
+  ~Portal() override = default;
 
-  virtual void Draw(const Camera& cam, GLuint curFBO) override;
+  void Draw(const Camera& cam, GLuint curFBO) override;
   void DrawPink(const Camera& cam);
 
   Vector3 GetBump(const Vector3& a) const;

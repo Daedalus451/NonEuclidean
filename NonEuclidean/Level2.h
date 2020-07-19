@@ -10,7 +10,9 @@ public:
   {
   }
 
-  virtual void Load(PObjectVec& objs, PPortalVec& portals, Player& player) override;
+  ~Level2() override = default;
+
+  void Load(PObjectVec& objs, PPortalVec& portals, Player& player) override;
 
 private:
   int num_rooms = 0;

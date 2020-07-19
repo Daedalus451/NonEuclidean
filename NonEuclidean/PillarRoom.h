@@ -21,7 +21,5 @@ public:
     portal.euler.y -= GH_PI / 2;
     portal.scale = Vector3(1, 1.5f, 1) * scale;
   }
-  virtual ~PillarRoom()
-  {
-  }
+  ~PillarRoom() override = default;
 };

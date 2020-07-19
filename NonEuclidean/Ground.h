@@ -20,7 +20,6 @@ public:
     texture = AquireTexture("checker_green.bmp");
     scale = Vector3(10, 1, 10);
   }
-  virtual ~Ground()
-  {
-  }
+
+  ~Ground() override = default;
 };

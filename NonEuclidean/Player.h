@@ -7,13 +7,11 @@ class Player : public Physical
 {
 public:
   Player();
-  virtual ~Player() override
-  {
-  }
+  ~Player() override = default;
 
-  virtual void Reset() override;
-  virtual void Update() override;
-  virtual void OnCollide(Object& other, const Vector3& push) override;
+  void Reset() override;
+  void Update() override;
+  void OnCollide(Object& other, const Vector3& push) override;
 
   void Look(float mouseDx, float mouseDy);
   void Move(float moveF, float moveL);

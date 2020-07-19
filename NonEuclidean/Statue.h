@@ -12,7 +12,5 @@ public:
     shader = AquireShader("texture");
     texture = AquireTexture("gold.bmp");
   }
-  virtual ~Statue()
-  {
-  }
+  ~Statue() override = default;
 };
