@@ -2,10 +2,6 @@
 
 #include <iostream>
 
-#define NOMINMAX
-
-#include <Windows.h>
-
 #include "GameHeader.h"
 #include "Input.h"
 
@@ -59,19 +55,19 @@ void Player::Update()
   // Movement
   float moveF = 0.0f;
   float moveL = 0.0f;
-  if(GH::INPUT->key['W'])
+  if(GH::INPUT->key[SDL_SCANCODE_W])
   {
     moveF += 1.0f;
   }
-  if(GH::INPUT->key['S'])
+  if(GH::INPUT->key[SDL_SCANCODE_S])
   {
     moveF -= 1.0f;
   }
-  if(GH::INPUT->key['A'])
+  if(GH::INPUT->key[SDL_SCANCODE_A])
   {
     moveL += 1.0f;
   }
-  if(GH::INPUT->key['D'])
+  if(GH::INPUT->key[SDL_SCANCODE_D])
   {
     moveL -= 1.0f;
   }
@@ -79,7 +75,7 @@ void Player::Update()
 
 #if 0
   //Jumping
-  if (onGround && GH::INPUT->key[VK_SPACE]) {
+  if (onGround && GH::INPUT->key[SDL_SCANCODE_SPACE]) {
     velocity.y += 2.0f * p_scale;
   }
 #endif

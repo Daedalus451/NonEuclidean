@@ -8,6 +8,7 @@ project(NonEuclidean
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 find_package(GLEW CONFIG REQUIRED)
+find_package(SDL2 CONFIG REQUIRED)
 
 add_executable(NonEuclidean WIN32
   NonEuclidean/Camera.cpp
@@ -67,6 +68,8 @@ add_executable(NonEuclidean WIN32
 target_link_libraries(NonEuclidean
   PRIVATE
     GLEW::glew_s
+    SDL2::SDL2-static
+    SDL2::SDL2main
 )
 
 set_target_properties(NonEuclidean

@@ -1,37 +1,35 @@
 #pragma once
 
-#define NOMINMAX
-
-#include <Windows.h>
+#include <SDL2/SDL.h>
 
 class Timer
 {
 public:
   Timer()
   {
-    QueryPerformanceFrequency(&frequency);
+    frequency = SDL_GetPerformanceFrequency();
   }
 
   void Start()
   {
-    QueryPerformanceCounter(&t1);
+    t1 = SDL_GetPerformanceCounter();
   }
 
   float Stop()
   {
-    QueryPerformanceCounter(&t2);
-    return float(t2.QuadPart - t1.QuadPart) / frequency.QuadPart;
+    t2 = SDL_GetPerformanceCounter();
+    return static_cast<float>(t2 - t1) / frequency;
   }
 
   int64_t GetTicks()
   {
-    QueryPerformanceCounter(&t2);
-    return t2.QuadPart;
+    t2 = SDL_GetPerformanceCounter();
+    return t2;
   }
 
   int64_t SecondsToTicks(float s)
   {
-    return int64_t(float(frequency.QuadPart) * s);
+    return static_cast<int64_t>(static_cast<float>(frequency) * s);
   }
 
   float StopStart()
@@ -42,7 +40,7 @@ public:
   }
 
 private:
-  LARGE_INTEGER frequency = {0}; // ticks per second
-  LARGE_INTEGER t1 = {0}; // ticks
-  LARGE_INTEGER t2 = {0};
+  int64_t frequency = 0; // ticks per second
+  int64_t t1 = 0; // ticks
+  int64_t t2 = 0;
 };

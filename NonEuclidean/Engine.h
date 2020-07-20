@@ -3,10 +3,9 @@
 #include <memory>
 #include <vector>
 
-#define NOMINMAX
-
 #include <GL/glew.h>
-#include <Windows.h>
+
+#include <SDL2/SDL.h>
 
 #include "Camera.h"
 #include "GameHeader.h"
@@ -29,8 +28,6 @@ public:
   void Render(const Camera& cam, GLuint curFBO, const Portal* skipPortal);
   void LoadScene(int ix);
 
-  LRESULT WindowProc(HWND hCurWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-
   const Player& GetPlayer() const
   {
     return *player;
@@ -41,18 +38,12 @@ private:
   void CreateGLWindow();
   void InitGLObjects();
   void DestroyGLObjects();
-  void SetupInputs();
   void ConfineCursor();
-  void ToggleFullscreen();
 
-  HDC hDC = nullptr; // device context
-  HGLRC hRC = nullptr; // opengl context
-  HWND hWnd = nullptr; // window
-  HINSTANCE hInstance = nullptr; // process id
-
-  LONG iWidth = 0; // window width
-  LONG iHeight = 0; // window height
-  bool isFullscreen = false; // fullscreen state
+  SDL_Window* window = nullptr;
+  SDL_GLContext glContext = nullptr;
+  int iHeight = 0;
+  int iWidth = 0;
 
   Camera main_cam;
   Input input;

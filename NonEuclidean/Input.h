@@ -2,7 +2,7 @@
 
 #include <array>
 
-struct tagRAWINPUT;
+#include <SDL2/SDL.h>
 
 class Input
 {
@@ -10,11 +10,11 @@ public:
   Input();
 
   void EndFrame();
-  void UpdateRaw(const tagRAWINPUT* raw);
+  void UpdateRaw();
 
   // Keyboard
-  std::array<bool, 256> key{};
-  std::array<bool, 256> key_press{};
+  std::array<bool, SDL_NUM_SCANCODES> key{};
+  std::array<bool, SDL_NUM_SCANCODES> key_press{};
 
   // Mouse
   std::array<bool, 3> mouse_button{};

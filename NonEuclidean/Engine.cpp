@@ -6,8 +6,6 @@
 #include <iostream>
 #include <limits>
 
-#include <GL/wglew.h>
-
 #include "Level1.h"
 #include "Level2.h"
 #include "Level3.h"
@@ -22,25 +20,20 @@ const Input* GH::INPUT = nullptr;
 int GH::REC_LEVEL = 0;
 int64_t GH::FRAME = 0;
 
-LRESULT WINAPI StaticWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-  Engine* eng = reinterpret_cast<Engine*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
-  if(eng)
-  {
-    return eng->WindowProc(hWnd, uMsg, wParam, lParam);
-  }
-  return DefWindowProc(hWnd, uMsg, wParam, lParam);
-}
-
 Engine::Engine()
 {
   GH::ENGINE = this;
   GH::INPUT = &input;
 
-  SetProcessDPIAware();
+  if(SDL_Init(SDL_INIT_EVERYTHING) != 0)
+  {
+    throw std::runtime_error("failed to initialize SDL");
+  }
+
   CreateGLWindow();
   InitGLObjects();
-  SetupInputs();
+
+  ConfineCursor();
 
   player = std::make_shared<Player>();
   GH::PLAYER = player.get();
@@ -60,101 +53,101 @@ Engine::Engine()
 
 Engine::~Engine()
 {
-  ClipCursor(nullptr);
-  wglMakeCurrent(nullptr, nullptr);
-  ReleaseDC(hWnd, hDC);
-  wglDeleteContext(hRC);
-  DestroyWindow(hWnd);
+  if(glContext)
+  {
+    SDL_GL_DeleteContext(glContext);
+  }
+  if(window)
+  {
+    SDL_DestroyWindow(window);
+  }
 }
 
 int Engine::Run()
 {
-  if(!hWnd || !hDC || !hRC)
-  {
-    return 1;
-  }
-
-  // Recieve events from this window
-  SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
-
   // Setup the timer
   const int64_t ticks_per_step = timer.SecondsToTicks(GH::DT);
   int64_t cur_ticks = timer.GetTicks();
   GH::FRAME = 0;
 
   // Game loop
-  MSG msg;
   while(true)
   {
-    if(PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+    SDL_Event event;
+    while(SDL_PollEvent(&event))
     {
-      // Handle windows messages
-      if(msg.message == WM_QUIT)
+      if(event.type == SDL_QUIT)
       {
         break;
       }
-      else
+      else if(event.type == SDL_WINDOWEVENT)
       {
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
+        if(event.window.event == SDL_WINDOWEVENT_RESIZED)
+        {
+          iWidth = event.window.data1;
+          iHeight = event.window.data2;
+          glViewport(0, 0, iWidth, iHeight);
+        }
       }
     }
-    else
+
+    input.UpdateRaw();
+
+    if(input.key_press[SDL_SCANCODE_ESCAPE])
     {
-      // Confine the cursor
-      ConfineCursor();
-
-      if(input.key_press['1'])
-      {
-        LoadScene(0);
-      }
-      else if(input.key_press['2'])
-      {
-        LoadScene(1);
-      }
-      else if(input.key_press['3'])
-      {
-        LoadScene(2);
-      }
-      else if(input.key_press['4'])
-      {
-        LoadScene(3);
-      }
-      else if(input.key_press['5'])
-      {
-        LoadScene(4);
-      }
-      else if(input.key_press['6'])
-      {
-        LoadScene(5);
-      }
-      else if(input.key_press['7'])
-      {
-        LoadScene(6);
-      }
-
-      // Used fixed time steps for updates
-      const int64_t new_ticks = timer.GetTicks();
-      for(int i = 0; cur_ticks < new_ticks && i < GH::MAX_STEPS; ++i)
-      {
-        Update();
-        cur_ticks += ticks_per_step;
-        GH::FRAME += 1;
-        input.EndFrame();
-      }
-      cur_ticks = (cur_ticks < new_ticks ? new_ticks : cur_ticks);
-
-      // Setup camera for rendering
-      const float n = std::clamp(NearestPortalDist() * 0.5f, GH::NEAR_MIN, GH::NEAR_MAX);
-      main_cam.worldView = player->WorldToCam();
-      main_cam.SetSize(iWidth, iHeight, n, GH::FAR_DIST);
-      main_cam.UseViewport();
-
-      // Render scene
-      GH::REC_LEVEL = GH::MAX_RECURSION;
-      Render(main_cam, 0, nullptr);
-      SwapBuffers(hDC);
+      break;
     }
+
+    if(input.key_press[SDL_SCANCODE_1])
+    {
+      LoadScene(0);
+    }
+    else if(input.key_press[SDL_SCANCODE_2])
+    {
+      LoadScene(1);
+    }
+    else if(input.key_press[SDL_SCANCODE_3])
+    {
+      LoadScene(2);
+    }
+    else if(input.key_press[SDL_SCANCODE_4])
+    {
+      LoadScene(3);
+    }
+    else if(input.key_press[SDL_SCANCODE_5])
+    {
+      LoadScene(4);
+    }
+    else if(input.key_press[SDL_SCANCODE_6])
+    {
+      LoadScene(5);
+    }
+    else if(input.key_press[SDL_SCANCODE_7])
+    {
+      LoadScene(6);
+    }
+
+    // Used fixed time steps for updates
+    const int64_t new_ticks = timer.GetTicks();
+    for(int i = 0; cur_ticks < new_ticks && i < GH::MAX_STEPS; ++i)
+    {
+      Update();
+      cur_ticks += ticks_per_step;
+      GH::FRAME += 1;
+      input.EndFrame();
+    }
+    cur_ticks = (cur_ticks < new_ticks ? new_ticks : cur_ticks);
+
+    // Setup camera for rendering
+    const float n = std::clamp(NearestPortalDist() * 0.5f, GH::NEAR_MIN, GH::NEAR_MAX);
+    main_cam.worldView = player->WorldToCam();
+    main_cam.SetSize(iWidth, iHeight, n, GH::FAR_DIST);
+    main_cam.UseViewport();
+
+    // Render scene
+    GH::REC_LEVEL = GH::MAX_RECURSION;
+    Render(main_cam, 0, nullptr);
+    SDL_GL_SwapWindow(window);
   }
 
   DestroyGLObjects();
@@ -346,158 +339,35 @@ void Engine::Render(const Camera& cam, GLuint curFBO, const Portal* skipPortal)
 #endif
 }
 
-LRESULT Engine::WindowProc(HWND hCurWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-  static PAINTSTRUCT ps;
-  static std::array<BYTE, 256> lpb{};
-  static UINT dwSize = static_cast<UINT>(lpb.size());
-
-  switch(uMsg)
-  {
-    case WM_SYSCOMMAND:
-      if(wParam == SC_SCREENSAVE || wParam == SC_MONITORPOWER)
-      {
-        return 0;
-      }
-      break;
-
-    case WM_PAINT:
-      BeginPaint(hCurWnd, &ps);
-      EndPaint(hCurWnd, &ps);
-      return 0;
-
-    case WM_SIZE:
-      iWidth = LOWORD(lParam);
-      iHeight = HIWORD(lParam);
-      PostMessage(hCurWnd, WM_PAINT, 0, 0);
-      return 0;
-
-    case WM_KEYDOWN:
-      // Ignore repeat keys
-      if(lParam & 0x40000000)
-      {
-        return 0;
-      }
-      input.key[wParam & 0xFF] = true;
-      input.key_press[wParam & 0xFF] = true;
-      if(wParam == VK_ESCAPE)
-      {
-        PostQuitMessage(0);
-      }
-      return 0;
-
-    case WM_SYSKEYDOWN:
-      if(wParam == VK_RETURN)
-      {
-        ToggleFullscreen();
-        return 0;
-      }
-      break;
-
-    case WM_KEYUP:
-      input.key[wParam & 0xFF] = false;
-      return 0;
-
-    case WM_INPUT:
-      dwSize = static_cast<UINT>(lpb.size());
-      GetRawInputData(reinterpret_cast<HRAWINPUT>(lParam), RID_INPUT, lpb.data(), &dwSize, sizeof(RAWINPUTHEADER));
-      input.UpdateRaw(reinterpret_cast<const RAWINPUT*>(lpb.data()));
-      break;
-
-    case WM_CLOSE:
-      PostQuitMessage(0);
-      return 0;
-  }
-
-  return DefWindowProc(hCurWnd, uMsg, wParam, lParam);
-}
-
 void Engine::CreateGLWindow()
 {
-  WNDCLASSEX wc;
-  hInstance = GetModuleHandle(nullptr);
-  wc.cbSize = sizeof(WNDCLASSEX);
-  wc.style = CS_OWNDC;
-  wc.lpfnWndProc = (WNDPROC) StaticWindowProc;
-  wc.cbClsExtra = 0;
-  wc.cbWndExtra = 0;
-  wc.hInstance = hInstance;
-  wc.hIcon = LoadIcon(nullptr, IDI_WINLOGO);
-  wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
-  wc.hbrBackground = nullptr;
-  wc.lpszMenuName = nullptr;
-  wc.lpszClassName = GH::CLASS;
-  wc.hIconSm = nullptr;
-
-  if(!RegisterClassEx(&wc))
-  {
-    MessageBoxEx(nullptr, "RegisterClass() failed: Cannot register window class.", "Error", MB_OK, 0);
-    return;
-  }
-
-  // Always start in windowed mode
   iWidth = GH::SCREEN_WIDTH;
   iHeight = GH::SCREEN_HEIGHT;
 
-  // Create the window
-  hWnd = CreateWindowEx(WS_EX_APPWINDOW | WS_EX_WINDOWEDGE, GH::CLASS, GH::TITLE,
-                        WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN, GH::SCREEN_X, GH::SCREEN_Y, iWidth, iHeight,
-                        nullptr, nullptr, hInstance, nullptr);
-
-  if(hWnd == nullptr)
+  window =
+    SDL_CreateWindow(GH::TITLE, GH::SCREEN_X, GH::SCREEN_Y, iWidth, iHeight,
+                     SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI | (GH::START_FULLSCREEN ? SDL_WINDOW_FULLSCREEN : 0));
+  if(!window)
   {
-    MessageBoxEx(nullptr, "CreateWindow() failed:  Cannot create a window.", "Error", MB_OK, 0);
-    return;
+    throw std::runtime_error("failed to create window");
   }
 
-  hDC = GetDC(hWnd);
-
-  PIXELFORMATDESCRIPTOR pfd;
-  std::memset(&pfd, 0, sizeof(pfd));
-  pfd.nSize = sizeof(pfd);
-  pfd.nVersion = 1;
-  pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
-  pfd.iPixelType = PFD_TYPE_RGBA;
-  pfd.cColorBits = 32;
-  pfd.cDepthBits = 32;
-  pfd.iLayerType = PFD_MAIN_PLANE;
-
-  const int pf = ChoosePixelFormat(hDC, &pfd);
-  if(pf == 0)
+  glContext = SDL_GL_CreateContext(window);
+  if(!glContext)
   {
-    MessageBoxEx(nullptr, "ChoosePixelFormat() failed: Cannot find a suitable pixel format.", "Error", MB_OK, 0);
-    return;
+    throw std::runtime_error("failed to create GL context");
   }
 
-  if(SetPixelFormat(hDC, pf, &pfd) == FALSE)
-  {
-    MessageBoxEx(nullptr, "SetPixelFormat() failed: Cannot set format specified.", "Error", MB_OK, 0);
-    return;
-  }
-
-  DescribePixelFormat(hDC, pf, sizeof(PIXELFORMATDESCRIPTOR), &pfd);
-
-  hRC = wglCreateContext(hDC);
-  wglMakeCurrent(hDC, hRC);
-
-  if(GH::START_FULLSCREEN)
-  {
-    ToggleFullscreen();
-  }
-  if(GH::HIDE_MOUSE)
-  {
-    ShowCursor(FALSE);
-  }
-
-  ShowWindow(hWnd, SW_SHOW);
-  SetForegroundWindow(hWnd);
-  SetFocus(hWnd);
+  SDL_SetWindowResizable(window, SDL_TRUE);
 }
 
 void Engine::InitGLObjects()
 {
   // Initialize extensions
-  glewInit();
+  if(glewInit() != GLEW_OK)
+  {
+    throw std::runtime_error("failed to initialize glew");
+  }
 
   // Basic global variables
   glClearColor(0.6f, 0.9f, 1.0f, 1.0f);
@@ -510,8 +380,10 @@ void Engine::InitGLObjects()
   // Check GL functionality
   glGetQueryiv(GL_SAMPLES_PASSED_ARB, GL_QUERY_COUNTER_BITS_ARB, &occlusionCullingSupported);
 
-  // Attempt to enalbe vsync (if failure then oh well)
-  wglSwapIntervalEXT(1);
+  if(SDL_GL_SetSwapInterval(-1) != 0)
+  {
+    SDL_GL_SetSwapInterval(1);
+  }
 }
 
 void Engine::DestroyGLObjects()
@@ -521,43 +393,12 @@ void Engine::DestroyGLObjects()
   vPortals.clear();
 }
 
-void Engine::SetupInputs()
-{
-  constexpr int HID_USAGE_PAGE_GENERIC = 0x01;
-  constexpr int HID_USAGE_GENERIC_MOUSE = 0x02;
-  constexpr int HID_USAGE_GENERIC_JOYSTICK = 0x04;
-  constexpr int HID_USAGE_GENERIC_GAMEPAD = 0x05;
-
-  std::array<RAWINPUTDEVICE, 3> Rid{};
-
-  // Mouse
-  Rid[0].usUsagePage = HID_USAGE_PAGE_GENERIC;
-  Rid[0].usUsage = HID_USAGE_GENERIC_MOUSE;
-  Rid[0].dwFlags = RIDEV_INPUTSINK;
-  Rid[0].hwndTarget = hWnd;
-
-  // Joystick
-  Rid[1].usUsagePage = HID_USAGE_PAGE_GENERIC;
-  Rid[1].usUsage = HID_USAGE_GENERIC_JOYSTICK;
-  Rid[1].dwFlags = 0;
-  Rid[1].hwndTarget = 0;
-
-  // Gamepad
-  Rid[2].usUsagePage = HID_USAGE_PAGE_GENERIC;
-  Rid[2].usUsage = HID_USAGE_GENERIC_GAMEPAD;
-  Rid[2].dwFlags = 0;
-  Rid[2].hwndTarget = 0;
-
-  RegisterRawInputDevices(Rid.data(), 3, sizeof(Rid[0]));
-}
-
 void Engine::ConfineCursor()
 {
   if(GH::HIDE_MOUSE)
   {
-    RECT rect;
-    GetWindowRect(hWnd, &rect);
-    SetCursorPos((rect.right + rect.left) / 2, (rect.top + rect.bottom) / 2);
+    SDL_SetRelativeMouseMode(SDL_TRUE);
+    SDL_SetWindowGrab(window, SDL_TRUE);
   }
 }
 
@@ -569,25 +410,4 @@ float Engine::NearestPortalDist() const
     dist = std::min(dist, vPortals[i]->DistTo(player->pos));
   }
   return dist;
-}
-
-void Engine::ToggleFullscreen()
-{
-  isFullscreen = !isFullscreen;
-  if(isFullscreen)
-  {
-    iWidth = GetSystemMetrics(SM_CXSCREEN);
-    iHeight = GetSystemMetrics(SM_CYSCREEN);
-    SetWindowLong(hWnd, GWL_STYLE, WS_POPUP | WS_CLIPSIBLINGS | WS_CLIPCHILDREN);
-    SetWindowLong(hWnd, GWL_EXSTYLE, WS_EX_APPWINDOW);
-    SetWindowPos(hWnd, HWND_TOPMOST, 0, 0, iWidth, iHeight, SWP_SHOWWINDOW);
-  }
-  else
-  {
-    iWidth = GH::SCREEN_WIDTH;
-    iHeight = GH::SCREEN_HEIGHT;
-    SetWindowLong(hWnd, GWL_STYLE, WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN);
-    SetWindowLong(hWnd, GWL_EXSTYLE, WS_EX_APPWINDOW | WS_EX_WINDOWEDGE);
-    SetWindowPos(hWnd, HWND_TOP, GH::SCREEN_X, GH::SCREEN_Y, iWidth, iHeight, SWP_SHOWWINDOW);
-  }
 }
