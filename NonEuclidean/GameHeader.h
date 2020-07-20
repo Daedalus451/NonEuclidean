@@ -32,8 +32,8 @@ inline constexpr int FBO_SIZE = 2048;
 inline constexpr int MAX_RECURSION = 4;
 
 // Gameplay
-inline constexpr float MOUSE_SENSITIVITY = 0.005f;
-inline constexpr float MOUSE_SMOOTH = 0.5f;
+inline constexpr float MOUSE_SENSITIVITY = 0.0006f;
+inline constexpr float MOUSE_SMOOTH = 0.25f;
 inline constexpr float WALK_SPEED = 2.9f;
 inline constexpr float WALK_ACCEL = 50.0f;
 inline constexpr float BOB_FREQ = 8.0f;
