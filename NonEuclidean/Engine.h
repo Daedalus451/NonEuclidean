@@ -39,11 +39,13 @@ private:
   void InitGLObjects();
   void DestroyGLObjects();
   void ConfineCursor();
+  void ToggleFullscreen();
 
   SDL_Window* window = nullptr;
   SDL_GLContext glContext = nullptr;
   int iHeight = 0;
   int iWidth = 0;
+  bool fullscreen = false;
 
   Camera main_cam;
   Input input;

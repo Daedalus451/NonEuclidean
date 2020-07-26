@@ -70,6 +70,11 @@ int Engine::Run()
   int64_t cur_ticks = timer.GetTicks();
   GH::FRAME = 0;
 
+  bool allowedToToggleFullscreen = true;
+
+  bool heldLAlt = false;
+  bool heldReturn = false;
+
   // Game loop
   while(true)
   {
@@ -86,7 +91,30 @@ int Engine::Run()
         {
           iWidth = event.window.data1;
           iHeight = event.window.data2;
-          glViewport(0, 0, iWidth, iHeight);
+        }
+      }
+      else if(event.type == SDL_KEYDOWN)
+      {
+        if(event.key.keysym.scancode == SDL_SCANCODE_RETURN)
+        {
+          heldLAlt = true;
+        }
+        else if(event.key.keysym.scancode == SDL_SCANCODE_LALT)
+        {
+          heldReturn = true;
+        }
+      }
+      else if(event.type == SDL_KEYUP)
+      {
+        if(event.key.keysym.scancode == SDL_SCANCODE_RETURN)
+        {
+          heldLAlt = false;
+          allowedToToggleFullscreen = true;
+        }
+        else if(event.key.keysym.scancode == SDL_SCANCODE_LALT)
+        {
+          heldReturn = false;
+          allowedToToggleFullscreen = true;
         }
       }
     }
@@ -96,6 +124,12 @@ int Engine::Run()
     if(input.key_press[SDL_SCANCODE_ESCAPE])
     {
       break;
+    }
+
+    if(allowedToToggleFullscreen && heldLAlt && heldReturn)
+    {
+      ToggleFullscreen();
+      allowedToToggleFullscreen = false;
     }
 
     if(input.key_press[SDL_SCANCODE_1])
@@ -156,6 +190,11 @@ int Engine::Run()
 
 void Engine::LoadScene(int ix)
 {
+  if(curScene == vScenes[ix])
+  {
+    return;
+  }
+
   // Clear out old scene
   if(curScene)
   {
@@ -400,6 +439,13 @@ void Engine::ConfineCursor()
     SDL_SetRelativeMouseMode(SDL_TRUE);
     SDL_SetWindowGrab(window, SDL_TRUE);
   }
+}
+
+void Engine::ToggleFullscreen()
+{
+  SDL_SetWindowFullscreen(window, fullscreen ? 0 : SDL_WINDOW_FULLSCREEN_DESKTOP);
+  SDL_GL_GetDrawableSize(window, &iWidth, &iHeight);
+  fullscreen = !fullscreen;
 }
 
 float Engine::NearestPortalDist() const
