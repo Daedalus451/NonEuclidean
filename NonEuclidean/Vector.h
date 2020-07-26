@@ -2,18 +2,15 @@
 
 #include <array>
 #include <cassert>
-#include <cfloat>
 #include <cmath>
 #include <iostream>
-#include <memory>
+#include <limits>
 
 class Vector3
 {
 public:
   // Constructors
-  Vector3()
-  {
-  }
+  Vector3() = default;
 
   explicit Vector3(float b)
   : x(b)
@@ -236,7 +233,7 @@ public:
 
   inline void NormalizeSafe()
   {
-    (*this) /= (Mag() + FLT_EPSILON);
+    (*this) /= (Mag() + std::numeric_limits<float>::epsilon());
   }
 
   inline Vector3 Normalized() const
@@ -246,7 +243,7 @@ public:
 
   inline Vector3 NormalizedSafe() const
   {
-    return (*this) / (Mag() + FLT_EPSILON);
+    return (*this) / (Mag() + std::numeric_limits<float>::epsilon());
   }
 
   inline float Angle(const Vector3& b) const
@@ -296,9 +293,7 @@ inline void operator/=(float b, Vector3& v)
 class Vector4
 {
 public:
-  Vector4()
-  {
-  }
+  Vector4() = default;
 
   explicit Vector4(float b)
   : x(b)
@@ -381,9 +376,7 @@ class Matrix4
 {
 public:
   // Constructors
-  Matrix4()
-  {
-  }
+  Matrix4() = default;
 
   explicit Matrix4(float b)
   {
